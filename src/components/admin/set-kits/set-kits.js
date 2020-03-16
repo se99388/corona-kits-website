@@ -36,7 +36,7 @@ const SetKits = () => {
                 return [];
             }
             else {
-                setAddRowBtn('Cancel new reward');
+                setAddRowBtn('Cancel new row');
                 return setKitsData;
             }
         });
@@ -47,7 +47,7 @@ const SetKits = () => {
         setUpdateRow([])
         setNewRowForm([]);
         setError(null);
-        setAddRowBtn('Add new reward');
+        setAddRowBtn('Add new row');
     }
 
     const handleSubmit = (apiFunc, id = null) => async ({ ...newState }) => {
