@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getKitsSupply } from '../../services/api';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Table, Container, Row, Col } from 'react-bootstrap';
 import { KitsSupplyTable } from './kits-supply.styled';
-import Moment from 'react-moment';
 const KitsSupply = () => {
 
     const [kitsSupply, setKitsSupply] = useState([]);
@@ -37,8 +36,10 @@ const KitsSupply = () => {
             </tr>)
         }
     </>)
-    return (<>
-        < KitsSupplyTable striped bordered hover responsive="sm">
+    return (<Container >
+   <Row>
+   <Col>
+        < KitsSupplyTable size="sm" striped bordered hover responsive="xs">
         <thead>
             {title}
         </thead>
@@ -46,7 +47,9 @@ const KitsSupply = () => {
             {tableContent}
         </tbody>
     </KitsSupplyTable >
-    </>
+    </Col>
+    </Row>
+    </Container >
     )
 }
 

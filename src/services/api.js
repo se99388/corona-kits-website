@@ -19,8 +19,32 @@ const handler = async options => {
     }
 };
 
-export const getKitsSupply = () =>{
+export const getKitsSupply = () => {
     return handler({
-        url:'/api/corona-kits'
+        url: '/api/corona-kits'
     });
 };
+
+export const addKitToKitSupply = (value) => {
+    console.log("value:", value)
+    return handler({
+        method: 'POST',
+        url: '/api/corona-kits',
+        data: value
+    });
+};
+
+export const removeKitSupply = (id) => {
+    return handler({
+        url: `/api/corona-kits/${id}`,
+        method: 'DELETE'
+    });
+};
+
+export const updateKitSupply = (value) => {
+    return handler({
+        method: 'PUT',
+        url: '/api/corona-kits',
+        data: value
+    });
+}

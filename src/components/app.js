@@ -3,15 +3,16 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import KitsSupply from './kits-supply';
 import Login from './login';
+import Admin from './admin';
 
 const App = () => {
     return (
         <Container >
             <Row  className='pt-2'>
-                <Col md={3} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <Col xs={3} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <Image src="/images/hylabs-logo-s.png" />
                 </Col>
-                <Col md={{ span: 3, offset: 6 }} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <Col xs={{ span: 3, offset: 6 }} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <Image src="/images/moh.jpg" />
                 </Col>
             </Row>
@@ -21,10 +22,14 @@ const App = () => {
             <Row className="justify-content-center">
                 <Switch>
                     <Route exact path="/">
-                        <Login />
+                    <KitsSupply />
+                        {/* <Login /> */}
                         </Route>
                         <Route exact path="/kits-supply">
                             <KitsSupply />
+                        </Route>
+                        <Route exact path="/admin">
+                            <Admin />
                         </Route>
                     </Switch>
             </Row>
