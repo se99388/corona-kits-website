@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SetKitsTable } from './set-kits-table.styled';
+import { Button } from 'react-bootstrap';
 const SetKits = ({ kitsSupply, edit, deleteKit, isNewFormOpen }) => {
 
     const title = kitsSupply.length ? (
@@ -25,19 +26,19 @@ const SetKits = ({ kitsSupply, edit, deleteKit, isNewFormOpen }) => {
                         {item[1] || "Empty"}
                     </td>)}
                 <td>
-                    <button disabled={isNewFormOpen}
+                    <Button variant="outline-light" disabled={isNewFormOpen}
                         onClick={() => edit(currentContent)}
                     >
                         <img src='/images/edit.png' />
-                    </button>
+                    </Button>
                 </td>
                 <td>
-                    <button disabled={isNewFormOpen}
+                    <Button variant="outline-light" disabled={isNewFormOpen}
                         onClick={() => deleteKit(currentContent.id)}
                     ><img src='/images/delete.png'
 
                         />
-                    </button>
+                    </Button>
                 </td>
             </tr>
         )}

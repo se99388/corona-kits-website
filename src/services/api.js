@@ -19,6 +19,8 @@ const handler = async options => {
     }
 };
 
+
+//for kits-supply
 export const getKitsSupply = () => {
     return handler({
         url: '/api/corona-kits'
@@ -47,4 +49,50 @@ export const updateKitSupply = (value) => {
         url: '/api/corona-kits',
         data: value
     });
+};
+
+
+//for kits
+export const getKits = () => {
+    return handler({
+        url: '/api/kits'
+    });
+};
+
+export const addKit = (value) => {
+    return handler({
+        method: 'POST',
+        url: '/api/kits',
+        data: value
+    });
+};
+
+export const removeKit = (id) => {
+    return handler({
+        url: `/api/kits/${id}`,
+        method: 'DELETE'
+    });
+};
+
+export const updateKit = (value) => {
+    return handler({
+        method: 'PUT',
+        url: '/api/kits',
+        data: value
+    });
+};
+
+export const login = (username, password) => {
+    return handler({
+        url: '/auth/login',
+        method: 'POST',
+        data: { username, password }
+    });
+};
+
+export const logout = ()=>{
+    return handler({
+        url: 'auth/logout',
+        method: 'GET'
+    })
 }
