@@ -50,8 +50,8 @@ app.use(routes);
 module.exports = app;
 
 //should be deleted by Zvi
-const port = process.env.PORT || 3001;
+// const port = process.env.PORT || 3001;
 
-app.listen(port,()=>{
-    console.log(`we are listening to port: ${port}`)
-})
+// app.listen(port,()=>{
+//     console.log(`we are listening to port: ${port}`)
+// })
