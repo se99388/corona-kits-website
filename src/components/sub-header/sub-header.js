@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getKits} from '../../services/api';
 import KitsSupply from '../kits-supply/kits-supply';
-const SubHeader = () =>{
+const SubHeader = ({update}) =>{
     const [allKits, setAllKits] = useState([]);
     const [error, setError] = useState(null);
 
@@ -17,7 +17,7 @@ const SubHeader = () =>{
 
     useEffect(()=>{
         getKitDetail()
-    },[]);
+    },[update]);
 
     return(<>
 

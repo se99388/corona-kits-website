@@ -3,8 +3,10 @@ import { Form, Button } from 'react-bootstrap';
 import { login } from '../../services/api';
 import { useHistory } from 'react-router-dom';
 import { ContainerForm, MyAlert, MyButton } from '../my-form/my-form.styled';
+import useHtmlTitle from '../../hooks/use-html-title';
 
 const Login = () => {
+    useHtmlTitle('hylabs login')
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();

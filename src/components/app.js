@@ -5,10 +5,12 @@ import KitsSupply from './kits-supply';
 import Login from './login';
 import Admin from './admin';
 import Cookies from 'js-cookie';
+import useHtmlTitle from '../hooks/use-html-title';
 
 const isAuth = () => !!Cookies.get('isa');
 
 const App = () => {
+    useHtmlTitle('home')
     return (
         <Container >
             <Row className='pt-2'>
@@ -24,8 +26,15 @@ const App = () => {
             </Row>
             <Row className="justify-content-center">
                 <Switch>
-                    <Route exact path="/">
-                        <Login />
+                    <Route exact path="/"
+                    render={(props) => {
+                        if (!isAuth()) {
+                            return <Login />
+                        } else {
+                            return <Redirect to="/kits-supply" />;
+                        }}}
+                    >
+                        
                     </Route>
                     <Route exact path="/kits-supply"
                      render={(props) => {

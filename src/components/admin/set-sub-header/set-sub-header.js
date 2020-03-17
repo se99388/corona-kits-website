@@ -10,6 +10,7 @@ const SetSubHeader = () => {
     const [kitDetails, setKitDetails] = useState('');
     const [updateRow, setUpdateRow] = useState([]);
     const [idCurrentRow, setIdCurrentRow] = useState(null);
+    const [ifUpdate, setIfUpdate] = useState('false');
     const [error, setError] = useState(null);
     const updateKitDetail = async () => {
         const response = await getKits();
@@ -36,6 +37,7 @@ const SetSubHeader = () => {
                 setError(response.error)
             }
             else {
+                setIfUpdate('true');
                 setError(null);
                 resetStates();
 
@@ -53,7 +55,7 @@ const SetSubHeader = () => {
     return (
         <Container>
             <Row>
-                <SubHeader />
+                <SubHeader update={ifUpdate}/>
             </Row>
             <Row>
                 <Button variant="outline-light" onClick={updateKitDetail}>

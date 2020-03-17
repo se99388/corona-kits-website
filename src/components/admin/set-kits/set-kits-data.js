@@ -14,7 +14,7 @@ export const setKitsData = [
         placeholder: 'Enter kit name',
         name: 'name',
         value: '',
-        yup: yup.string().required('Write the kit name')
+        // yup: yup.string().required('Write the kit name')
     },
     {
         type: 'text',
@@ -22,7 +22,7 @@ export const setKitsData = [
         placeholder: 'Enter catalog number',
         name: 'catNum',
         value: '',
-        yup: yup.string().required('Write the kit name')
+        // yup: yup.string().required('Write the kit name')
     },
     {
         type: 'number',

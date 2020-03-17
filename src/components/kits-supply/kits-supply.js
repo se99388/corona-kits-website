@@ -4,7 +4,11 @@ import { Button, Table, Container, Row, Col } from 'react-bootstrap';
 import { KitsSupplyTable } from './kits-supply.styled';
 import { useHistory } from 'react-router-dom';
 import SubHeader from '../sub-header';
+import useHtmlTitle from '../../hooks/use-html-title';
+
+const TABLE_TITLES = ["ID", "KIT NAME", "CATALOG NUMBER", "LAB"," QUANTITY", "DATE SUPPLY"]
 const KitsSupply = () => {
+    useHtmlTitle('Corona-kits-supply');
     const history = useHistory();
     const [kitsSupply, setKitsSupply] = useState([]);
 
@@ -29,7 +33,7 @@ const KitsSupply = () => {
     const title = kitsSupply.length ? (
         <tr>
             <th>#</th>
-            {Object.keys(kitsSupply[0]).map((item, index) =>
+            {TABLE_TITLES.map((item, index) =>
                 <th key={index}>{item.toUpperCase()}</th>
             )}
         </tr>
@@ -55,7 +59,7 @@ const KitsSupply = () => {
         </Row>
         <Row>
             <Col>
-                < KitsSupplyTable size="lg" striped bordered hover responsive="md">
+                < KitsSupplyTable  striped bordered hover responsive="sm">
                     <thead>
                         {title}
                     </thead>
