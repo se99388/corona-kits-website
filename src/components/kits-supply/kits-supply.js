@@ -1,32 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { getKitsSupply, logout } from '../../services/api';
-import { Button, Table, Container, Row, Col } from 'react-bootstrap';
+import { logout, getPriorityApiLabsList } from '../../services/api';
+import { Button, Table, Container, Row, Col,Alert } from 'react-bootstrap';
 import { KitsSupplyTable } from './kits-supply.styled';
 import { useHistory } from 'react-router-dom';
 import SubHeader from '../sub-header';
 import useHtmlTitle from '../../hooks/use-html-title';
+import Moment from 'react-moment';
 
-const TABLE_TITLES = ["ID", "KIT NAME", "CATALOG NUMBER", "LAB"," QUANTITY", "DATE SUPPLY"]
+const TABLE_TITLES = ["SUPPLY STATUS ", "LAB", " QUANTITY", "SUPPLY DATE "]
 const KitsSupply = () => {
     useHtmlTitle('Corona-kits-supply');
     const history = useHistory();
     const [kitsSupply, setKitsSupply] = useState([]);
+    const [totalNumKits, setTotalNumKits] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         (async () => {
-            const result = await getKitsSupply()
-            console.log(result)
-            setKitsSupply(result);
+            try {
+                let allKitQuantity = 0;
+                let result = await getPriorityApiLabsList();
+                result = result.map(item => {
+                    item.CURDATE = <Moment format="DD/MM/YYYY">{item.CURDATE}</Moment>
+                    if (item.DOCDES == 'החזרה מלקוח'){
+                        item.TQUANT = item.TQUANT * -1;
+                    }
+                    allKitQuantity += item.TQUANT;
+                    return item;
+                });
+                setKitsSupply(result);
+                setTotalNumKits(allKitQuantity);
+            } catch (e) {
+                setError(e.message);
+            }
         })();
     }, []);
 
-    const logoutHandle = async()=>{
+    const logoutHandle = async () => {
         const response = await logout();
         console.log(response);
-        if (response.success){
+        if (response.success) {
             history.push('/')
-        }else{
-            alert ('Error')
+        } else {
+            alert('Error')
         }
     }
 
@@ -41,8 +57,8 @@ const KitsSupply = () => {
     let rowNum = 1;
 
     const tableContent = (<>
-        {kitsSupply.map((currentContent) =>
-            <tr key={currentContent.id} id={currentContent.id}>
+        {kitsSupply.map((currentContent, index) =>
+            <tr key={index} id={currentContent.id}>
                 <td>{rowNum++}</td>
                 {Object.entries(currentContent).map((item, index) =>
                     <td key={index} name={item[0]}>
@@ -53,13 +69,13 @@ const KitsSupply = () => {
         }
     </>)
     return (<Container >
-         <Button onClick={logoutHandle}>Log out </Button>
+        <Button onClick={logoutHandle}>Log out </Button>
         <Row>
             <SubHeader />
         </Row>
         <Row>
             <Col>
-                < KitsSupplyTable  striped bordered hover responsive="sm">
+                < KitsSupplyTable striped bordered hover responsive="xs">
                     <thead>
                         {title}
                     </thead>
@@ -69,6 +85,8 @@ const KitsSupply = () => {
                 </KitsSupplyTable >
             </Col>
         </Row>
+        <h5>TOTAL NUMBERS OF KITS: {totalNumKits}</h5>
+        {error&&<Alert variant="danger">{error}</Alert>}
     </Container >
     )
 }

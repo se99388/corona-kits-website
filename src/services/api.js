@@ -90,9 +90,23 @@ export const login = (username, password) => {
     });
 };
 
-export const logout = ()=>{
+export const logout = () => {
     return handler({
         url: 'auth/logout',
         method: 'GET'
     })
 }
+
+
+export const getPriorityApiKitInStock = () => {
+    return handler({
+        url: '/api/priority-api/in-stock'
+    });
+};
+
+export const getPriorityApiLabsList = () => {
+    return handler({
+        url: '/api/priority-api/labs-list-supply'
+    });
+};
+

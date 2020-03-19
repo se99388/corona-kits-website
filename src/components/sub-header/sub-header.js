@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {getKits} from '../../services/api';
-import KitsSupply from '../kits-supply/kits-supply';
+import {getPriorityApiKitInStock} from '../../services/api';
 const SubHeader = ({update}) =>{
     const [allKits, setAllKits] = useState([]);
     const [error, setError] = useState(null);
 
     const getKitDetail = async() =>{
         try{
-            const response = await getKits()
+            const response = await getPriorityApiKitInStock();
             setAllKits(response);
         }
         catch(e){
@@ -22,7 +21,11 @@ const SubHeader = ({update}) =>{
     return(<>
 
         {allKits.map((kit, key)=>
-        <h3 key={key}>The available quantity of {kit.name}: {kit.quantity} units</h3>)}
+        <div key={key} style = {{textAlign:'center', margin: 'auto'}}>
+        <h4 >Available Corona seegene kits in stock:</h4>
+        <h3 style = {{backgroundColor:'#B5EAD7', fontWeight:'bold'}} >{kit.LOGCOUNTERS_SUBFORM[0].BALANCE} kits ({kit.LOGCOUNTERS_SUBFORM[0].BALANCE * 100} tests)</h3>
+        </div>
+        )}
 
         {error && <h3>{error}</h3>}
         </>  
