@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 
 
 export const KitsSupplyTable = styled(Table)`
- td:nth-of-type(2), td:nth-of-type(3){
+ td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(8){
     display: none;
  }
  td, th{
