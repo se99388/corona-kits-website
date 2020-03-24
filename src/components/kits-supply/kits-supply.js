@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { logout, getPriorityApiLabsList } from '../../services/api';
 import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
-import { KitsSupplyTable } from './kits-supply.styled';
+import { KitsSupplyTable,TrWithColor } from './kits-supply.styled';
 import { useHistory } from 'react-router-dom';
 import SubHeader from '../sub-header';
 import useHtmlTitle from '../../hooks/use-html-title';
@@ -9,13 +9,15 @@ import Moment from 'react-moment';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
-const TABLE_TITLES = ["SUPPLY STATUS ", "LAB", " QUANTITY", "SUPPLY DATE"]
+
+const TABLE_TITLES = ["SUPPLY STATUS ", "LAB", " QUANTITY", "SUPPLY DATE"];
+
+
 const KitsSupply = () => {
     useHtmlTitle('Corona-kits-supply');
     const history = useHistory();
     const [kitsSupply, setKitsSupply] = useState([]);
     const [customersList, setCustomersList] = useState([]);
-    const [totalNumKits, setTotalNumKits] = useState(null);
     const [error, setError] = useState(null);
 
  
@@ -28,8 +30,8 @@ const KitsSupply = () => {
                 if (item.DOCDES == 'החזרה מלקוח') {
                     item.TQUANT = item.TQUANT * -1;
                 }
-                editObject(item,'CDES','Y_8871_5_ESHB')
-                editObject(item,'CUSTNAME','Y_4795_5_ESHB')
+                editObject(item,'CDES','Y_8871_5_ESHB');
+                editObject(item,'CUSTNAME','Y_4795_5_ESHB');
                 return item;
             });
             setCustomersList(listOfCustomers(result))
@@ -43,7 +45,7 @@ const KitsSupply = () => {
     }, []);
 
     const editObject=(obj, keyToEdit, keyToAdd)=>{
-        obj= (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}-${obj[keyToEdit]}`:null;
+        obj= (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}`:null;
     }
 
     const logoutHandle = async () => {
@@ -58,11 +60,10 @@ const KitsSupply = () => {
 
 
     const listOfCustomers = (list) => {
-        console.log("list", list)
         const newObj = list.reduce((accum, curr)=>{
-            if(!accum[curr.CUSTNAME])
-            accum[curr.CUSTNAME]=[]
-            accum[curr.CUSTNAME].push(curr)
+            if(!accum[curr.CDES])
+            accum[curr.CDES]=[]
+            accum[curr.CDES].push(curr)
             return accum;
         },{})
         return newObj
@@ -93,14 +94,17 @@ const KitsSupply = () => {
 
     const tableContent = (<>
         {kitsSupply.map((currentContent, index) =>
-            <tr key={index} id={currentContent.id}>
+            <TrWithColor key={index}        
+            marked = {currentContent.Y_4795_5_ESHB != null ? 'blue': null}
+            >
                 <td>{rowNum++}</td>
                 {Object.entries(currentContent).map((item, index) =>
-                    <td key={index} name={item[0]}>
+                    <td        
+                    key={index} name={item[0]}>
                         {item[1] || "Empty"}
                     </td>
                 )}
-            </tr>)
+            </TrWithColor>)
         }
     </>)
     const kitsQuant = () => {
@@ -109,6 +113,7 @@ const KitsSupply = () => {
         }, 0)
         return result
     }
+
     return (
         <Container >
             {!kitsSupply.length?<Spinner />:

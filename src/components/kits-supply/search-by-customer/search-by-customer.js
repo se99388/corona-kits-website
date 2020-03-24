@@ -10,18 +10,21 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
     const searchHandle = () => {
         console.log("checkedCustomers", checkedCustomers)
         const newListSupply = checkedCustomers.map(chosenCustomer =>
-            customersList[chosenCustomer.value]
+            customersList[chosenCustomer.label]
+            // customersList[chosenCustomer.value]
             // customersList.filter((item, index) => index === parseInt(chosenCustomer.value))
 
         );
+        console.log("newListSupply",newListSupply)
         listSupply(newListSupply.flat(2));
     }
 
     const options = () => {
+        console.log("customersList",customersList)
         const arr = Object.values(customersList).map((item, index) => {
             return { label: item[0].CDES, value: item[0].CUSTNAME }
         })
-        console.log(arr.sort((a, b) => {
+        arr.sort((a, b) => {
             let nameA = a.label.toUpperCase(); // ignore upper and lowercase
             let nameB = b.label.toUpperCase(); // ignore upper and lowercase
             if (nameA < nameB) {
@@ -33,7 +36,7 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
 
             // names must be equal
             return 0;
-        }))
+        })
         return arr;
     }
 
