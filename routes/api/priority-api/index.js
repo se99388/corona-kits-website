@@ -5,7 +5,7 @@ const router = express.Router();
 const Authorization = 'Basic QVBJOjEyMzQ';
 const instance = axios.create({
     baseURL: 'https://priority.hylabs.co.il/odata/Priority/tabula.ini/h250718/',
-    timeout: 5000,
+    timeout: 8000,
     method: 'get',
     headers: {
         Authorization,
@@ -40,10 +40,10 @@ router.get('/in-stock', async (req, res, next) => {
         res.json({ error });
     }
 })
-
+//Y_4795_5_ESHB - אתר, Y_8871_5_ESHB - תאור אתר
 router.get('/labs-list-supply', async (req, res, next) => {
     try {
-        const url = "TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME";
+        const url = "TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB";
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);
         res.json(response.data.value)

@@ -8,14 +8,33 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
     const [checkedCustomers, setCheckedCustomers] = useState([]);
 
     const searchHandle = () => {
-        // console.log("checkedCustomers",checkedCustomers)
-        const newListSupply = checkedCustomers.map(chosenCustomer => customersList.filter((item, index) => index === parseInt(chosenCustomer.value)));
-        // console.log("newListSupply",newListSupply)
+        console.log("checkedCustomers", checkedCustomers)
+        const newListSupply = checkedCustomers.map(chosenCustomer =>
+            customersList[chosenCustomer.value]
+            // customersList.filter((item, index) => index === parseInt(chosenCustomer.value))
+
+        );
         listSupply(newListSupply.flat(2));
     }
 
     const options = () => {
-        return customersList.map(item => { return { label: item[0].CDES, value: item[0].CUSTNAME } })
+        const arr = Object.values(customersList).map((item, index) => {
+            return { label: item[0].CDES, value: item[0].CUSTNAME }
+        })
+        console.log(arr.sort((a, b) => {
+            let nameA = a.label.toUpperCase(); // ignore upper and lowercase
+            let nameB = b.label.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+
+            // names must be equal
+            return 0;
+        }))
+        return arr;
     }
 
     const customTheme = (theme) => {
@@ -40,12 +59,13 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
                     isMulti
                     noOptionsMessage={() => 'No more customers'}
                     onChange={setCheckedCustomers}
+
                 //  autoFocus
                 />
 
             </Col>
             <Col>
-            {checkedCustomers.length ?<Button variant="success" className="mb-2" onClick={searchHandle}>filter</Button>: null}
+                {checkedCustomers.length ? <Button variant="success" className="mb-2" onClick={searchHandle}>filter</Button> : null}
             </Col>
         </Row>
     </Container>)

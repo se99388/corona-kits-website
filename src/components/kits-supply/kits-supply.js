@@ -18,6 +18,7 @@ const KitsSupply = () => {
     const [totalNumKits, setTotalNumKits] = useState(null);
     const [error, setError] = useState(null);
 
+ 
     const priorityApiLabsList = async () => {
         try {
             setKitsSupply([])
@@ -27,9 +28,10 @@ const KitsSupply = () => {
                 if (item.DOCDES == 'החזרה מלקוח') {
                     item.TQUANT = item.TQUANT * -1;
                 }
+                editObject(item,'CDES','Y_8871_5_ESHB')
+                editObject(item,'CUSTNAME','Y_4795_5_ESHB')
                 return item;
             });
-
             setCustomersList(listOfCustomers(result))
             setKitsSupply(result);
         } catch (e) {
@@ -39,6 +41,10 @@ const KitsSupply = () => {
     useEffect(() => {
         priorityApiLabsList()
     }, []);
+
+    const editObject=(obj, keyToEdit, keyToAdd)=>{
+        obj= (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}-${obj[keyToEdit]}`:null;
+    }
 
     const logoutHandle = async () => {
         const response = await logout();
@@ -53,30 +59,28 @@ const KitsSupply = () => {
 
     const listOfCustomers = (list) => {
         console.log("list", list)
-        // let mySet = new Set([...kitsDetails]);
-        // const newArr = kitsDetails.map(obj=>{
+        const newObj = list.reduce((accum, curr)=>{
+            if(!accum[curr.CUSTNAME])
+            accum[curr.CUSTNAME]=[]
+            accum[curr.CUSTNAME].push(curr)
+            return accum;
+        },{})
+        return newObj
+        
+        // if (list) {
+        //     const newArr = list.reduce((accum, curr) => {
 
-        // })
-        if (list) {
-            const newArr = list.reduce((accum, curr) => {
-                // let newObj = [];
-                // let newSet = accum[curr['CUSTNAME']] = curr
-                // // newObj.push(curr['CUSTNAME']);
-                // // newObj.push(curr)
-                // // newObj[curr['CUSTNAME']]=curr['CUSTNAME'];
-                (accum[curr['CUSTNAME']] = accum[curr['CUSTNAME']] || []).push(curr)
-                // accum.push(newSet)
-                return accum;
-            }, [])
-            const arr2 = [1, 2, 3, 3, 3, 4, 5, 6]
-            const mySet = new Set(newArr)
-            const back = [...mySet]
-            // console.log("listOfCustomers", newArr)
-            return newArr;
-        }
+        //         (accum[curr['CDES']] = accum[curr['CDES']] || []).push(curr)
 
-
+        //         return accum;
+        //     }, [])
+        //     const arr2 = [1, 2, 3, 3, 3, 4, 5, 6]
+        //     const mySet = new Set(newArr)
+        //     const back = [...mySet]
+        //     return newArr;
+        // }
     }
+
     const title = kitsSupply.length ? (
         <tr>
             <th>#</th>
