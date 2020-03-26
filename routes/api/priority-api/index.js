@@ -43,7 +43,7 @@ router.get('/in-stock', async (req, res, next) => {
 //Y_4795_5_ESHB - אתר, Y_8871_5_ESHB - תאור אתר
 router.get('/labs-list-supply', async (req, res, next) => {
     try {
-        const url = "TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB";
+        const url = "TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc";
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);
         res.json(response.data.value)

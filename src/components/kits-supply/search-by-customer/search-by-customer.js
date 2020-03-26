@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table, Container, Row, Col, Alert, FormCheck, Form, DropdownButton, Dropdown } from 'react-bootstrap';
 // import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
+import { sort } from '../../../utils/io'
 import makeAnimated from 'react-select/animated';
 
 const SearchByCustomer = ({ customersList, listSupply }) => {
@@ -15,29 +16,15 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
             // customersList.filter((item, index) => index === parseInt(chosenCustomer.value))
 
         );
-        console.log("newListSupply",newListSupply)
+        console.log("newListSupply", newListSupply)
         listSupply(newListSupply.flat(2));
     }
 
     const options = () => {
-        console.log("customersList",customersList)
-        const arr = Object.values(customersList).map((item, index) => {
-            return { label: item[0].CDES, value: item[0].CUSTNAME }
-        })
-        arr.sort((a, b) => {
-            let nameA = a.label.toUpperCase(); // ignore upper and lowercase
-            let nameB = b.label.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-                return -1;
-            }
-            if (nameA > nameB) {
-                return 1;
-            }
-
-            // names must be equal
-            return 0;
-        })
-        return arr;
+        console.log("customersList", customersList)
+        const arr = Object.values(customersList).map((item, index) =>
+            ({ label: item[0].CDES, value: item[0].CUSTNAME }))
+        return sort(arr);
     }
 
     const customTheme = (theme) => {
@@ -61,7 +48,7 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
                     isSearchable
                     isMulti
                     noOptionsMessage={() => 'No more customers'}
-                    onChange={setCheckedCustomers}
+                    onChange={(selected) => setCheckedCustomers(selected || [])}
 
                 //  autoFocus
                 />

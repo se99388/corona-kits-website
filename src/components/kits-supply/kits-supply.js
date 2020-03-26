@@ -42,6 +42,9 @@ const KitsSupply = () => {
     }
     useEffect(() => {
         priorityApiLabsList()
+        setInterval(()=>{
+            priorityApiLabsList()
+        },600000)
     }, []);
 
     const editObject=(obj, keyToEdit, keyToAdd)=>{
@@ -113,7 +116,7 @@ const KitsSupply = () => {
         }, 0)
         return result
     }
-
+console.log("kitsSupply",kitsSupply)
     return (
         <Container >
             {!kitsSupply.length?<Spinner />:

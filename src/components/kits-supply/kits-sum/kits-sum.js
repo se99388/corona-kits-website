@@ -3,7 +3,7 @@ import React from 'react';
 const KitsSum = ({totalNumKits}) =>{
 
     return(
-        <h5>TOTAL NUMBERS OF KITS: {totalNumKits}</h5>
+        <h5>TOTAL NUMBER OF KITS: {totalNumKits} ({totalNumKits*100} tests)</h5>
     )
 }
 
