@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { logout, getPriorityApiLabsList } from '../../services/api';
 import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
-import { KitsSupplyTable,TrWithColor } from './kits-supply.styled';
+import { KitsSupplyTable, TrWithColor } from './kits-supply.styled';
 import { useHistory } from 'react-router-dom';
 import SubHeader from '../sub-header';
 import useHtmlTitle from '../../hooks/use-html-title';
@@ -22,7 +22,7 @@ const KitsSupply = () => {
     const [customersList, setCustomersList] = useState([]);
     const [error, setError] = useState(null);
 
- 
+
     const priorityApiLabsList = async () => {
         try {
             setKitsSupply([])
@@ -32,8 +32,8 @@ const KitsSupply = () => {
                 if (item.DOCDES == 'החזרה מלקוח') {
                     item.TQUANT = item.TQUANT * -1;
                 }
-                editObject(item,'CDES','Y_8871_5_ESHB');
-                editObject(item,'CUSTNAME','Y_4795_5_ESHB');
+                editObject(item, 'CDES', 'Y_8871_5_ESHB');
+                editObject(item, 'CUSTNAME', 'Y_4795_5_ESHB');
                 return item;
             });
             setCustomersList(listOfCustomers(result))
@@ -44,13 +44,13 @@ const KitsSupply = () => {
     }
     useEffect(() => {
         priorityApiLabsList()
-        setInterval(()=>{
+        setInterval(() => {
             priorityApiLabsList()
-        },600000)
+        }, 600000)
     }, []);
 
-    const editObject=(obj, keyToEdit, keyToAdd)=>{
-        obj= (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}`:null;
+    const editObject = (obj, keyToEdit, keyToAdd) => {
+        obj = (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}` : null;
     }
 
     const logoutHandle = async () => {
@@ -65,14 +65,14 @@ const KitsSupply = () => {
 
 
     const listOfCustomers = (list) => {
-        const newObj = list.reduce((accum, curr)=>{
-            if(!accum[curr.CDES])
-            accum[curr.CDES]=[]
+        const newObj = list.reduce((accum, curr) => {
+            if (!accum[curr.CDES])
+                accum[curr.CDES] = []
             accum[curr.CDES].push(curr)
             return accum;
-        },{})
+        }, {})
         return newObj
-        
+
     }
 
     const title = kitsSupply.length ? (
@@ -87,13 +87,13 @@ const KitsSupply = () => {
 
     const tableContent = (<>
         {kitsSupply.map((currentContent, index) =>
-            <TrWithColor key={index}        
-            marked = {currentContent.Y_4795_5_ESHB != null ? 'blue': null}
+            <TrWithColor key={index}
+                marked={currentContent.Y_4795_5_ESHB != null ? 'blue' : null}
             >
                 <td>{rowNum++}</td>
                 {Object.entries(currentContent).map((item, index) =>
-                    <td        
-                    key={index} name={item[0]}>
+                    <td
+                        key={index} name={item[0]}>
                         {item[1] || "Empty"}
                     </td>
                 )}
@@ -106,42 +106,44 @@ const KitsSupply = () => {
         }, 0)
         return result
     }
-// console.log("kitsSupply",kitsSupply)
+    // console.log("kitsSupply",kitsSupply)
     return (
         <Container >
-            {!kitsSupply.length?<Spinner />:
-            <>
-              <Row>
-            {/* <Link as={Col} md={2} to='/all-kits-status'>Supply status</Link> */}
-            <Button as={Col} md={{offset: 9, span: 1}} className="mb-3" onClick={logoutHandle}>Log out </Button>
-            </Row>
-            <Row>
-                <SearchByCustomer
-                    customersList={customersList}
-                    listSupply={setKitsSupply}
-                />
-            </Row>
-            <Row>
-                <Col>
-                    <Button onClick={priorityApiLabsList}>Get All Customers </Button>
-                </Col>
-            </Row>
-            <Row>
-                <SubHeader />
-            </Row>
-            <Row>
-                <Col>
-                    < KitsSupplyTable striped bordered hover responsive="xs">
-                        <thead>
-                            {title}
-                        </thead>
-                        <tbody>
-                            {tableContent}
-                        </tbody>
-                    </KitsSupplyTable >
-                </Col>
-            </Row>
-            <KitsSum totalNumKits={kitsQuant()} /></>}
+            {!kitsSupply.length ? <Spinner /> :
+                <>
+                    <Row>
+                        <Col>
+                            {/* <Link as={Col} md={2} to='/all-kits-status'>Supply status</Link> */}
+                            <Button className="mb-3" onClick={logoutHandle}>Log out </Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <SearchByCustomer
+                            customersList={customersList}
+                            listSupply={setKitsSupply}
+                        />
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Button onClick={priorityApiLabsList}>Get All Customers </Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <SubHeader />
+                    </Row>
+                    <Row>
+                        <Col>
+                            < KitsSupplyTable striped bordered hover responsive="xs">
+                                <thead>
+                                    {title}
+                                </thead>
+                                <tbody>
+                                    {tableContent}
+                                </tbody>
+                            </KitsSupplyTable >
+                        </Col>
+                    </Row>
+                    <KitsSum totalNumKits={kitsQuant()} /></>}
 
             {error && <Alert variant="danger">{error}</Alert>}
         </Container >

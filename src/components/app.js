@@ -18,9 +18,9 @@ const App = () => {
                 <Col xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Image src="/images/hylabs-logo-s.png" style={{ width: '90%' }} />
                 </Col>
-                <Col xs={{ span: 3, offset: 6 }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* <Col xs={{ span: 3, offset: 6 }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Image src="/images/moh_clear.png" style={{ width: '100%' }} />
-                </Col>
+                </Col> */}
             </Row>
             <Row>
                 <br />

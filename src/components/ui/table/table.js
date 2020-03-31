@@ -19,7 +19,7 @@ const MyTable = ({tableTitles, tableContent})=>{
             <tr key={index}>
                 <td>{rowNum++}</td>
                 {Object.entries(currentContent).map((item, index) =>
-                    <td        
+                    <td      style={{ direction: 'rtl'}}  
                     key={index} name={item[0]}>
                         {item[1]}
                     </td>

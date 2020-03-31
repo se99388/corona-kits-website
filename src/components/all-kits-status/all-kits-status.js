@@ -53,11 +53,11 @@ const AllKitsStatus = () => {
                     else {
                         accum[key] = value;
                     }
-    
+
                     return accum;
                 }, {})
-    
-    
+
+
                 const newData = response.map(item => {
                     item['BALANCE'] = item['LOGCOUNTERS_SUBFORM'][0].BALANCE;
                     item['PORDERS'] = item['LOGCOUNTERS_SUBFORM'][0].PORDERS;
@@ -65,7 +65,7 @@ const AllKitsStatus = () => {
                     delete item['LOGCOUNTERS_SUBFORM'];
                     return item;
                 })
-    
+
                 const dataObj = reduce(newData, 'PARTNAME');
                 for (const prop in data) {
                     Object.assign(dataObj[prop], { ...data[prop] });
@@ -74,14 +74,14 @@ const AllKitsStatus = () => {
                 for (const [key, value] of Object.entries(finalText)) {
                     dataObj[key].text = value
                 }
-    
+
                 // console.log(dataObj);
                 // console.log(newData);
                 setAllKitsStatus(newData);
 
             }
 
-   
+
         }
         catch (e) {
             setError(e.message)
@@ -93,13 +93,19 @@ const AllKitsStatus = () => {
     }, []);
 
     return (
-        <div>
+        <Container>
             <Row >
-                <Link as={Col} className='mb-3' to='/kits-supply'>Back</Link>
+                <Col>
+                    <Link className='mb-3' to='/kits-supply'>Back</Link>
+                </Col>
             </Row>
-            {!allKitsStatus.length ? <Spinner /> : <MyTable tableTitles={TABLE_TITLE} tableContent={allKitsStatus} />}
-            {error && <Alert variant="danger">{error}</Alert>}
-        </div>
+            <Row >
+                <Col>
+                    {!allKitsStatus.length ? <Spinner /> : <MyTable tableTitles={TABLE_TITLE} tableContent={allKitsStatus} />}
+                    {error && <Alert variant="danger">{error}</Alert>}
+                </Col>
+            </Row >
+        </Container>
     )
 }
 
