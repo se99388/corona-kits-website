@@ -104,6 +104,18 @@ export const getPriorityApiKitInStock = () => {
     });
 };
 
+export const getPriorityApiAllKitsInStockNotes = () => {
+    return handler({
+        url: '/api/priority-api/all-kits-in-stock-notes'
+    });
+};
+
+export const getPriorityApiAllKitsInStock = () => {
+    return handler({
+        url: '/api/priority-api/all-kits-in-stock'
+    });
+};
+
 export const getPriorityApiLabsList = () => {
     return handler({
         url: '/api/priority-api/labs-list-supply'

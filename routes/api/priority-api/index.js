@@ -40,6 +40,34 @@ router.get('/in-stock', async (req, res, next) => {
         res.json({ error });
     }
 })
+
+router.get('/all-kits-in-stock-notes', async (req, res, next) => {
+    try {
+        
+        const url = "PORDERS?$filter=SUPNAME eq '55921' or SUPNAME eq '57046' or SUPNAME eq '55222' or SUPNAME eq '55289' and CLOSEDBOOL eq ''&$expand=PORDERITEMS_SUBFORM($filter=CLOSEDBOOL eq '' or PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'IM235905' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803';$expand=PORDERITEMSTEXT_SUBFORM)";
+
+        const response = await getPriorityApi(url);
+        res.json(response.data.value)
+    } catch (e) {
+        let error = 'Server Error! please try again later';
+        console.log(e)
+        res.json({ error });
+    }
+})
+
+router.get('/all-kits-in-stock', async (req, res, next) => {
+    try {
+        const url = "LOGPART?$filter=PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IM235905' or PARTNAME eq 'IM235903' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' &$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE,PORDERS)";
+
+        const response = await getPriorityApi(url);
+        res.json(response.data.value)
+    } catch (e) {
+        let error = 'Server Error! please try again later';
+        console.log(e)
+        res.json({ error });
+    }
+})
+
 //Y_4795_5_ESHB - אתר, Y_8871_5_ESHB - תאור אתר
 router.get('/labs-list-supply', async (req, res, next) => {
     try {

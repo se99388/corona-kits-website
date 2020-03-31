@@ -6,6 +6,7 @@ import Login from './login';
 import Admin from './admin';
 import Cookies from 'js-cookie';
 import useHtmlTitle from '../hooks/use-html-title';
+import AllKitsSupply from './all-kits-status';
 
 const isAuth = () => !!Cookies.get('isa');
 
@@ -44,6 +45,14 @@ const App = () => {
                             return <Redirect to="/" />;
                         }}}>
                     </Route>
+                    <Route exact path='/all-kits-status'                    
+                    render={(props) => {
+                        if (isAuth()) {
+                            return  < AllKitsSupply/>
+                        } else {
+                            return <Redirect to="/" />;
+                        }}}>
+                    </Route>
                     <Route exact path="/admin"
                      render={(props) => {
                         if (isAuth()) {
@@ -52,6 +61,10 @@ const App = () => {
                             return <Redirect to="/" />;
                         }}}>          
                     </Route>
+                    <Route>
+                        <Redirect to="/"/>
+                    </Route>
+             
                 </Switch>
             </Row>
         </Container>

@@ -9,6 +9,8 @@ import Moment from 'react-moment';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
+import AllKitsSupply from '../all-kits-status';
+import { Link } from 'react-router-dom';
 
 const TABLE_TITLES = ["SUPPLY STATUS ", "LAB", " QUANTITY", "SUPPLY DATE"];
 
@@ -71,18 +73,6 @@ const KitsSupply = () => {
         },{})
         return newObj
         
-        // if (list) {
-        //     const newArr = list.reduce((accum, curr) => {
-
-        //         (accum[curr['CDES']] = accum[curr['CDES']] || []).push(curr)
-
-        //         return accum;
-        //     }, [])
-        //     const arr2 = [1, 2, 3, 3, 3, 4, 5, 6]
-        //     const mySet = new Set(newArr)
-        //     const back = [...mySet]
-        //     return newArr;
-        // }
     }
 
     const title = kitsSupply.length ? (
@@ -116,12 +106,15 @@ const KitsSupply = () => {
         }, 0)
         return result
     }
-console.log("kitsSupply",kitsSupply)
+// console.log("kitsSupply",kitsSupply)
     return (
         <Container >
             {!kitsSupply.length?<Spinner />:
             <>
-            <Button className="mb-3" onClick={logoutHandle}>Log out </Button>
+              <Row>
+            {/* <Link as={Col} md={2} to='/all-kits-status'>Supply status</Link> */}
+            <Button as={Col} md={{offset: 9, span: 1}} className="mb-3" onClick={logoutHandle}>Log out </Button>
+            </Row>
             <Row>
                 <SearchByCustomer
                     customersList={customersList}
