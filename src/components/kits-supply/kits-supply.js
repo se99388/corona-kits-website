@@ -9,11 +9,12 @@ import Moment from 'react-moment';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
+import {renameValueInArr} from '../../utils/io'
 import AllKitsSupply from '../all-kits-status';
 import { Link } from 'react-router-dom';
 
 const TABLE_TITLES = ["SUPPLY STATUS ", "LAB", " QUANTITY", "SUPPLY DATE"];
-
+const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`,`לאבטק סופליי קומפני`,`מדיפארם בע'מ`]
 
 const KitsSupply = () => {
     useHtmlTitle('Corona-kits-supply');
@@ -27,6 +28,7 @@ const KitsSupply = () => {
         try {
             setKitsSupply([])
             let result = await getPriorityApiLabsList();
+            
             result = result.map(item => {
                 item.CURDATE = <Moment format="DD/MM/YYYY">{item.CURDATE}</Moment>
                 if (item.DOCDES == 'החזרה מלקוח') {
@@ -55,7 +57,6 @@ const KitsSupply = () => {
 
     const logoutHandle = async () => {
         const response = await logout();
-        console.log(response);
         if (response.success) {
             history.push('/')
         } else {
@@ -71,10 +72,28 @@ const KitsSupply = () => {
             accum[curr.CDES].push(curr)
             return accum;
         }, {})
+
+        //add new customer name to the customer list object - it is mutating object
+        joinCustomersUnderNewKey(newObj)
+        console.log(newObj)
         return newObj
 
     }
 
+    const joinCustomersUnderNewKey = (currentObj,newKey = 'לקוחות פלשתינאים')=>{
+        CUSTOMERS_TO_JOIN.map(name=>{
+            if (currentObj[name]){
+                const oldKey = name;
+                if (!currentObj[newKey]){
+                    currentObj[newKey] = []
+                }
+                currentObj[newKey].push(...currentObj[oldKey])
+                delete currentObj[oldKey]
+            }
+        })
+        //change customer name in each object int the array to the new key name = 'לקוחות פלשתינאים'
+        currentObj[newKey] && renameValueInArr(currentObj[newKey],'CDES',newKey)
+    }
     const title = kitsSupply.length ? (
         <tr>
             <th>#</th>

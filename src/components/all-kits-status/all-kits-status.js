@@ -100,12 +100,10 @@ const AllKitsStatus = () => {
                     <Link className='mb-3' to='/kits-supply'>Back</Link>
                 </Col>
             </Row>
-            <Row >
-                <Col>
+          
                     {!allKitsStatus.length ? <Spinner /> : <MyTable tableTitles={TABLE_TITLE} tableContent={allKitsStatus} />}
                     {error && <Alert variant="danger">{error}</Alert>}
-                </Col>
-            </Row >
+          
         </Container>
     )
 }

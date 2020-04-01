@@ -13,3 +13,16 @@ export const sort = (arrToSort) =>
         return 0;
     })
 
+
+    export const renameKey=(obj,newKey,oldKey)=>{
+        obj[newKey] = obj[oldKey];
+        delete obj[oldKey]
+
+    }
+
+    export const renameValueInArr =(array,key=null,newValue)=>{
+        return array.map(el=>{
+            el[key] = newValue;
+        })
+    }
+
