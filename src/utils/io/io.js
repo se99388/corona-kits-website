@@ -17,7 +17,6 @@ const generalSorting = (arr, key, firstVal, secondVal) => {
     return arr.sort((a, b) => {
         let nameA = a[key]; 
         let nameB = b[key]; 
-        console.log(nameA,nameA)
         if (nameA < nameB) {
             return firstVal;
         }
@@ -55,7 +54,8 @@ export const updateData = (data) =>
 data.map(item => {
     // item.CURDATE = <Moment format="DD/MM/YYYY">{item.CURDATE}</Moment>
     // item.CURDATE =  Date.parse(item.CURDATE)
-    item.CURDATE = new Date(item.CURDATE).toLocaleDateString()
+    // item.CURDATE =new Date(item.CURDATE).toLocaleDateString('en-US')
+item.CURDATE =item.CURDATE.replace(/T.+/g,"")
     if (item.DOCDES == 'החזרה מלקוח') {
         item.TQUANT = item.TQUANT * -1;
     }
