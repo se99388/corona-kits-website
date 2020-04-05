@@ -26,6 +26,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-select": "^3.1.0",
+    "reactjs-popup": "^1.5.0",
     "request": "^2.88.2",
     "styled-components": "^5.0.1",
     "textversionjs": "^1.1.3",

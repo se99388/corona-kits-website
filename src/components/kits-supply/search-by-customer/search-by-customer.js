@@ -9,19 +9,19 @@ const SearchByCustomer = ({ customersList, listSupply }) => {
     const [checkedCustomers, setCheckedCustomers] = useState([]);
 
     const searchHandle = () => {
-        console.log("checkedCustomers", checkedCustomers)
+        // console.log("checkedCustomers", checkedCustomers)
         const newListSupply = checkedCustomers.map(chosenCustomer =>
             customersList[chosenCustomer.label]
             // customersList[chosenCustomer.value]
             // customersList.filter((item, index) => index === parseInt(chosenCustomer.value))
 
         );
-        console.log("newListSupply", newListSupply)
+        // console.log("newListSupply", newListSupply)
         listSupply(newListSupply.flat(2));
     }
 
     const options = () => {
-        console.log("customersList", customersList)
+        // console.log("customersList", customersList)
         const arr = Object.values(customersList).map((item, index) =>
             ({ label: item[0].CDES, value: item[0].CUSTNAME }))
         return sort(arr);

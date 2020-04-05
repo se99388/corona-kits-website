@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { logout, getPriorityApiLabsList } from '../../services/api';
+import { logout, getPriorityApiLabsList, getPriorityApiLabsListByDate } from '../../services/api';
 import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
-import { KitsSupplyTable, TrWithColor } from './kits-supply.styled';
+import { KitsSupplyTable, TrWithColor, MyDiv, RowCenter } from './kits-supply.styled';
 import { useHistory } from 'react-router-dom';
 import SubHeader from '../sub-header';
 import useHtmlTitle from '../../hooks/use-html-title';
@@ -9,12 +9,14 @@ import Moment from 'react-moment';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
-import {renameValueInArr} from '../../utils/io'
-import AllKitsSupply from '../all-kits-status';
+import { renameValueInArr, sortByKey, updateData } from '../../utils/io'
+import Calendar from '../ui/calendar';
+import Sort from '../ui/sort';
+import Popup from "reactjs-popup";
 import { Link } from 'react-router-dom';
 
-const TABLE_TITLES = ["SUPPLY STATUS ", "LAB", " QUANTITY", "SUPPLY DATE"];
-const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`,`לאבטק סופליי קומפני`,`מדיפארם בע'מ`]
+const TABLE_TITLES = [{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
+const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`, `לאבטק סופליי קומפני`, `מדיפארם בע'מ`]
 
 const KitsSupply = () => {
     useHtmlTitle('Corona-kits-supply');
@@ -22,28 +24,21 @@ const KitsSupply = () => {
     const [kitsSupply, setKitsSupply] = useState([]);
     const [customersList, setCustomersList] = useState([]);
     const [error, setError] = useState(null);
-
+    //2020-04-05T00:00:00+02:00
 
     const priorityApiLabsList = async () => {
         try {
             setKitsSupply([])
             let result = await getPriorityApiLabsList();
-            
-            result = result.map(item => {
-                item.CURDATE = <Moment format="DD/MM/YYYY">{item.CURDATE}</Moment>
-                if (item.DOCDES == 'החזרה מלקוח') {
-                    item.TQUANT = item.TQUANT * -1;
-                }
-                editObject(item, 'CDES', 'Y_8871_5_ESHB');
-                editObject(item, 'CUSTNAME', 'Y_4795_5_ESHB');
-                return item;
-            });
+
+            result = updateData(result);
             setCustomersList(listOfCustomers(result))
             setKitsSupply(result);
         } catch (e) {
             setError(e.message);
         }
     }
+
     useEffect(() => {
         priorityApiLabsList()
         setInterval(() => {
@@ -51,9 +46,6 @@ const KitsSupply = () => {
         }, 600000)
     }, []);
 
-    const editObject = (obj, keyToEdit, keyToAdd) => {
-        obj = (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}` : null;
-    }
 
     const logoutHandle = async () => {
         const response = await logout();
@@ -75,16 +67,16 @@ const KitsSupply = () => {
 
         //add new customer name to the customer list object - it is mutating object
         joinCustomersUnderNewKey(newObj)
-        console.log(newObj)
+        // console.log(newObj)
         return newObj
 
     }
 
-    const joinCustomersUnderNewKey = (currentObj,newKey = 'לקוחות פלשתינאים')=>{
-        CUSTOMERS_TO_JOIN.map(name=>{
-            if (currentObj[name]){
+    const joinCustomersUnderNewKey = (currentObj, newKey = 'לקוחות פלשתינאים') => {
+        CUSTOMERS_TO_JOIN.map(name => {
+            if (currentObj[name]) {
                 const oldKey = name;
-                if (!currentObj[newKey]){
+                if (!currentObj[newKey]) {
                     currentObj[newKey] = []
                 }
                 currentObj[newKey].push(...currentObj[oldKey])
@@ -92,14 +84,38 @@ const KitsSupply = () => {
             }
         })
         //change customer name in each object int the array to the new key name = 'לקוחות פלשתינאים'
-        currentObj[newKey] && renameValueInArr(currentObj[newKey],'CDES',newKey)
+        currentObj[newKey] && renameValueInArr(currentObj[newKey], 'CDES', newKey)
+    }
+
+    const handleSort = (isAsc, keyToSort) => {
+        const sortedTable = sortByKey(kitsSupply, keyToSort, isAsc);
+        setKitsSupply(sortedTable)
+        // console.log(sortedTable)
     }
     const title = kitsSupply.length ? (
         <tr>
             <th>#</th>
-            {TABLE_TITLES.map((item, index) =>
-                <th key={index}>{item.toUpperCase()}</th>
-            )}
+            {TABLE_TITLES.map((currentTitle, index) =>
+                Object.entries(currentTitle).map((item, index) =>
+                    <th
+                        key={index}
+                    >
+                        {/* <MyDiv>    
+                                   */}
+                        <RowCenter >
+                            <Col lg={6}>
+                                {item[1].toUpperCase()}
+                            </Col>
+                            <Col lg={6}>
+                                <Sort
+                                    sort={handleSort}
+                                    keyToSort={item[0]}
+                                />
+                            </Col>
+                        </RowCenter>
+                        {/* </MyDiv> */}
+                    </th>
+                ))}
         </tr>
     ) : null
     let rowNum = 1;
@@ -125,18 +141,46 @@ const KitsSupply = () => {
         }, 0)
         return result
     }
-    // console.log("kitsSupply",kitsSupply)
+
+    const priorityApiLabsListByDate = async (dates) => {
+        try {
+            setKitsSupply([])
+
+            let result = await getPriorityApiLabsListByDate(dates);
+            if (result.error) {
+                setError(result.error)
+            }
+            else {
+                result = updateData(result)
+                setCustomersList(listOfCustomers(result))
+                setKitsSupply(result);
+            }
+
+        } catch (e) {
+            setError(e.message);
+        }
+    }
+    // console.log("kitsSupply", kitsSupply)
     return (
         <Container >
             {!kitsSupply.length ? <Spinner /> :
                 <>
-                    <Row>
+
+
+                    <Row >
                         <Col>
-                            {/* <Link as={Col} md={2} to='/all-kits-status'>Supply status</Link> */}
-                            <Button className="mb-3" onClick={logoutHandle}>Log out </Button>
+                            <Button className="mb-3 float-right" onClick={logoutHandle}>Log out </Button>
                         </Col>
                     </Row>
                     <Row>
+                    <Col>
+                            <Popup trigger={<Button variant='light' className="mb-3">Filter by date</Button>} position="right center">
+                                <div>    <Calendar
+                                    apiByDate={priorityApiLabsListByDate}
+                                /></div>
+                            </Popup>
+                        </Col>
+
                         <SearchByCustomer
                             customersList={customersList}
                             listSupply={setKitsSupply}
@@ -144,7 +188,7 @@ const KitsSupply = () => {
                     </Row>
                     <Row>
                         <Col>
-                            <Button onClick={priorityApiLabsList}>Get All Customers </Button>
+                            <Button variant='info' onClick={priorityApiLabsList}>Refresh </Button>
                         </Col>
                     </Row>
                     <Row>

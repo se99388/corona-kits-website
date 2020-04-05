@@ -67,11 +67,30 @@ router.get('/all-kits-in-stock', async (req, res, next) => {
         res.json({ error });
     }
 })
+// TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and CURDATE ge 2020-03-31 and CURDATE le 2020-04-04 and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc
+
+// TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and CURDATE ge '' and CURDATE le '' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc 
+
 
 //Y_4795_5_ESHB - אתר, Y_8871_5_ESHB - תאור אתר
 router.get('/labs-list-supply', async (req, res, next) => {
     try {
         const url = "TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc";
+        const encodedURI = encodeURI(url);
+        const response = await getPriorityApi(encodedURI);
+        res.json(response.data.value)
+    } catch (e) {
+        let error = 'Server Error! please try again later';
+        console.log(e)
+        res.json({ error });
+    }
+})
+
+router.post('/labs-list-supply-by-date', async (req, res, next) => {
+    try {
+        const {startDate, endDate} = req.body;
+        console.log(startDate, endDate)
+        const url = `TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and CURDATE ge ${startDate} and CURDATE le ${endDate} and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);
         res.json(response.data.value)

@@ -122,3 +122,12 @@ export const getPriorityApiLabsList = () => {
     });
 };
 
+
+export const getPriorityApiLabsListByDate = (value) => {
+    return handler({
+        method:'POST',
+        url: '/api/priority-api/labs-list-supply-by-date',
+        data: value
+    });
+};
+
