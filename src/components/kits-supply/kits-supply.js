@@ -9,7 +9,7 @@ import Moment from 'react-moment';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
-import { renameValueInArr, sortByKey, updateData } from '../../utils/io'
+import { renameValueInArr, sortByKey, updateData, refreshData } from '../../utils/io';
 import Calendar from '../ui/calendar';
 import Sort from '../ui/sort';
 import Popup from "reactjs-popup";
@@ -28,7 +28,6 @@ const KitsSupply = () => {
 
     const priorityApiLabsList = async () => {
         try {
-            setKitsSupply([])
             let result = await getPriorityApiLabsList();
 
             result = updateData(result);
@@ -40,10 +39,9 @@ const KitsSupply = () => {
     }
 
     useEffect(() => {
-        priorityApiLabsList()
-        setInterval(() => {
-            priorityApiLabsList()
-        }, 600000)
+        priorityApiLabsList();
+        const refreshSessionId = refreshData(priorityApiLabsList,600000);
+        return ()=>{clearInterval(refreshSessionId)}
     }, []);
 
 

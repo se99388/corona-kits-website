@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import api from './api';
 import auth from './auth';
+import mashlat from './mashlat';
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ const protect = (req, res, next) => {
     next();
 };
 
+router.use('/mashlat',mashlat);
 router.use('/api',protect, api);
 
 // i define route only for the login - i want to login will be /auth/login and not under /api - its not api!

@@ -5,13 +5,13 @@ import { useHistory } from 'react-router-dom';
 import useHtmlTitle from '../../hooks/use-html-title';
 import Moment from 'react-moment';
 import Spinner from '../../utils/spinner/Spinner.js';
+import {refreshData} from '../../utils/io';
 import { Switch, Route, Redirect, Link } from 'react-router-dom';
 import MyTable from '../ui/table';
 import { reduce } from '../../utils/reduce';
-import { data } from './data';
+import { data, tableOrderData } from './data';
 import textVersion from "textversionjs";
 
-const TABLE_TITLE = ['catalog number', 'description', 'quantity in stock (boxes)', 'open orders (boxes)', 'units per box', 'unit for 1 sample', 'samples per box', 'notes', 'No. of samples in stock'];
 
 
 const convertArrToString = (arr) =>
@@ -28,10 +28,11 @@ const AllKitsStatus = () => {
     const [allKitsStatus, setAllKitsStatus] = useState([]);
     const [error, setError] = useState(null);
 
-    const textForProduct = []
+    let textForProduct = []
 
     const getAllKitsStatus = async () => {
         try {
+            textForProduct = []
             const response = await getPriorityApiAllKitsInStock();
             const response1 = await getPriorityApiAllKitsInStockNotes();
             if (response1.length && response.length) {
@@ -90,7 +91,9 @@ const AllKitsStatus = () => {
     };
 
     useEffect(() => {
-        getAllKitsStatus()
+         getAllKitsStatus();
+         const refreshSessionId= refreshData(getAllKitsStatus,600000);  
+         return ()=>{clearInterval(refreshSessionId)}
     }, []);
 
     return (
@@ -101,7 +104,7 @@ const AllKitsStatus = () => {
                 </Col>
             </Row>
           
-                    {!allKitsStatus.length ? <Spinner /> : <MyTable tableTitles={TABLE_TITLE} tableContent={allKitsStatus} />}
+                    {!allKitsStatus.length ? <Spinner /> : <MyTable tableContent={allKitsStatus} tableOrderData={tableOrderData} />}
                     {error && <Alert variant="danger">{error}</Alert>}
           
         </Container>

@@ -2,13 +2,13 @@ import React from 'react';
 import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
 import {GeneralTable} from './table.styled';
 
-const MyTable = ({tableTitles, tableContent})=>{
+const MyTable = ({tableContent, tableOrderData})=>{
 
     const title = (
         <tr>
             <th>#</th>
-            {tableTitles.map((item, index) =>
-                <th key={index}>{item.toUpperCase()}</th>
+            {tableOrderData.map((keyItem, index) =>
+                <th key={index}>{keyItem.title.toUpperCase()}</th>
             )}
         </tr>
     )
@@ -18,10 +18,10 @@ const MyTable = ({tableTitles, tableContent})=>{
         {tableContent.map((currentContent, index) =>
             <tr key={index}>
                 <td>{rowNum++}</td>
-                {Object.entries(currentContent).map((item, index) =>
+                {tableOrderData.map((keyItem, index) =>
                     <td      style={{ direction: 'rtl'}}  
-                    key={index} name={item[0]}>
-                        {item[1]}
+                  key={index}>
+                        {currentContent[keyItem.field]}
                     </td>
                 )}
             </tr>)

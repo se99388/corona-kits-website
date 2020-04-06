@@ -17,8 +17,15 @@ export const data = {
     IMTCS0803: createDataObj(960,1),
     IMRP10243X: createDataObj(100,1),
     TTS238: createDataObj(1,1),
-    CAP250: createDataObj(1,1),
-
-
-
+    CAP250: createDataObj(1,1)
 }
+
+export const tableOrderData = [
+    {field:'PARTNAME',title:'catalog number'},
+    {field:'EPARTDES', title:'description'},
+    {field:'BALANCE', title:'quantity in stock (boxes)'},
+    {field:'samplesInStock', title:'No. of samples in stock'},
+    {field:'PORDERS', title:'open orders (boxes)'},
+    {field:'text', title:'notes'}
+]
+

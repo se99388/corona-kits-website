@@ -68,3 +68,5 @@ const editObject = (obj, keyToEdit, keyToAdd) => {
     obj = (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}` : null;
 }
 
+export const refreshData=(cb,time)=>setInterval(cb,time);
+
