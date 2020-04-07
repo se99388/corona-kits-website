@@ -17,7 +17,9 @@ export const data = {
     IMTCS0803: createDataObj(960,1),
     IMRP10243X: createDataObj(100,1),
     TTS238: createDataObj(1,1),
-    CAP250: createDataObj(1,1)
+    CAP250: createDataObj(1,1),
+    MBC0097: createDataObj(768,1),
+    IMHW4412: createDataObj(50,1)
 }
 
 export const tableOrderData = [

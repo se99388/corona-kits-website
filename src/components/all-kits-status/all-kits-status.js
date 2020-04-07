@@ -98,7 +98,7 @@ const AllKitsStatus = () => {
 
     return (
         <Container>
-            <Nav/>
+            {/* <Nav/> */}
             {/* <Row >
                 <Col>
                     <Link className='mb-3' to='/kits-supply'>Back</Link>

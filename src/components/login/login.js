@@ -41,7 +41,7 @@ const Login = () => {
                     e.preventDefault();
                     const res = await login(username, password);
                     if (res.success) {
-                        history.push('/kits-supply');
+                        history.push('/');
                     } else {
                         alert('wrong username or password!');
                     }

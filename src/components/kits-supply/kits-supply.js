@@ -164,7 +164,7 @@ const KitsSupply = () => {
             {!kitsSupply.length ? <Spinner /> :
                 <>
 
-            <Nav />
+            {/* <Nav /> */}
 
                     <Row >
                         <Col>

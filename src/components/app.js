@@ -7,6 +7,7 @@ import Admin from './admin';
 import Cookies from 'js-cookie';
 import useHtmlTitle from '../hooks/use-html-title';
 import AllKitsSupply from './all-kits-status';
+import Nav from './nav'
 
 const isAuth = () => !!Cookies.get('isa');
 
@@ -27,32 +28,33 @@ const App = () => {
             </Row>
             <Row className="justify-content-center">
                 <Switch>
-                    <Route exact path="/"
+                    <Route  path="/"
                     render={(props) => {
                         if (!isAuth()) {
                             return <Login />
                         } else {
-                            return <Redirect to="/kits-supply" />;
+                            // return <Redirect to="/kits-supply" />;
+                            return <Nav/>
                         }}}
                     >
                         
                     </Route>
-                    <Route exact path="/kits-supply"
+                    {/* <Route exact path="/kits-supply"
                      render={(props) => {
                         if (isAuth()) {
                             return<KitsSupply />
                         } else {
                             return <Redirect to="/" />;
                         }}}>
-                    </Route>
-                    <Route exact path='/all-kits-status'                    
+                    </Route> */}
+                    {/* <Route exact path='/all-kits-status'                    
                     render={(props) => {
                         if (isAuth()) {
                             return  < AllKitsSupply/>
                         } else {
                             return <Redirect to="/" />;
                         }}}>
-                    </Route>
+                    </Route> */}
                     <Route exact path="/admin"
                      render={(props) => {
                         if (isAuth()) {
