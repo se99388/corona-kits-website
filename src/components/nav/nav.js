@@ -7,22 +7,29 @@ import { MyLink } from './nav.styled';
 const Nav = () => {
     let match = useRouteMatch();
     return (
+        <Container>
         <Row className="justify-content-center">
             <div>
                 <MyLink to={`${match.url}`}>Corona-kits-users</MyLink> | <MyLink to={`${match.url}all-kits-status`}>Corona-stock-status</MyLink>
             </div>
-            <Switch>
-                <Route exact path={`${match.path}`}>
-                    <KitsSupply />
-                </Route>
-                <Route path={`${match.path}all-kits-status`}>
-                    <AllKitsSupply />
-                </Route>
-                <Route>
-                    <Redirect to="/" />
-                </Route>
-            </Switch>
         </Row>
+        <Row>
+            <Col>
+        <Switch>
+            <Route exact path={`${match.path}`}>
+                <KitsSupply />
+            </Route>
+            <Route path={`${match.path}all-kits-status`}>
+                <AllKitsSupply />
+            </Route>
+            <Route>
+                <Redirect to="/" />
+            </Route>
+        </Switch>
+        </Col>
+        </Row>
+        </Container>
+       
     )
 }
 

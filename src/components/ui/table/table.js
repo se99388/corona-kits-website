@@ -29,7 +29,7 @@ const MyTable = ({tableContent, tableOrderData})=>{
        </> )
 
         return(
-            < GeneralTable striped bordered hover responsive="xs">
+            < GeneralTable striped bordered hover responsive="lg">
                         <thead>
                             {title}
                         </thead>
