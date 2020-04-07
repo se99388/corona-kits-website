@@ -5,7 +5,6 @@ import { KitsSupplyTable, TrWithColor, MyDiv, RowCenter } from './kits-supply.st
 import { useHistory } from 'react-router-dom';
 import SubHeader from '../sub-header';
 import useHtmlTitle from '../../hooks/use-html-title';
-import Moment from 'react-moment';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
@@ -13,6 +12,7 @@ import { renameValueInArr, sortByKey, updateData, refreshData } from '../../util
 import Calendar from '../ui/calendar';
 import Sort from '../ui/sort';
 import Popup from "reactjs-popup";
+import Nav from '../nav';
 import { Link } from 'react-router-dom';
 
 const TABLE_TITLES = [{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
@@ -164,6 +164,7 @@ const KitsSupply = () => {
             {!kitsSupply.length ? <Spinner /> :
                 <>
 
+            <Nav />
 
                     <Row >
                         <Col>

@@ -11,7 +11,7 @@ import MyTable from '../ui/table';
 import { reduce } from '../../utils/reduce';
 import { data, tableOrderData } from './data';
 import textVersion from "textversionjs";
-
+import Nav from '../nav';
 
 
 const convertArrToString = (arr) =>
@@ -98,12 +98,13 @@ const AllKitsStatus = () => {
 
     return (
         <Container>
-            <Row >
+            <Nav/>
+            {/* <Row >
                 <Col>
                     <Link className='mb-3' to='/kits-supply'>Back</Link>
                 </Col>
-            </Row>
-          
+            </Row> */}
+          <br/>
                     {!allKitsStatus.length ? <Spinner /> : <MyTable tableContent={allKitsStatus} tableOrderData={tableOrderData} />}
                     {error && <Alert variant="danger">{error}</Alert>}
           
