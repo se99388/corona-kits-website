@@ -14,7 +14,7 @@ export const GeneralTable= styled(Table)`
     vertical-align: middle;
     
  }
- @media screen and (max-width: 1028px) {
+ @media screen and (max-width: 445px) {
     td, th {
     font-size:85%;
   }
