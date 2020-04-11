@@ -98,9 +98,9 @@ export const logout = () => {
 }
 
 
-export const getPriorityApiKitInStock = () => {
+export const getPriorityApiKitInStock = (partname) => {
     return handler({
-        url: '/api/priority-api/in-stock'
+        url:`/api/priority-api/in-stock/${partname}`
     });
 };
 
@@ -116,9 +116,9 @@ export const getPriorityApiAllKitsInStock = () => {
     });
 };
 
-export const getPriorityApiLabsList = () => {
+export const getPriorityApiLabsList = (partname) => {
     return handler({
-        url: '/api/priority-api/labs-list-supply'
+        url: `/api/priority-api/labs-list-supply/${partname}`
     });
 };
 

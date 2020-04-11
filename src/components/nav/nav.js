@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
 import { Switch, Route, Redirect, Link, useRouteMatch } from 'react-router-dom';
 import KitsSupply from '../kits-supply';
+import CoronaKitsUsers from '../corona-kits-users';
 import AllKitsSupply from '../all-kits-status';
 import { MyLink } from './nav.styled';
 const Nav = () => {
@@ -17,7 +18,7 @@ const Nav = () => {
             <Col>
         <Switch>
             <Route exact path={`${match.path}`}>
-                <KitsSupply />
+                <CoronaKitsUsers />
             </Route>
             <Route path={`${match.path}all-kits-status`}>
                 <AllKitsSupply />

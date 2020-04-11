@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import express from 'express';
 const router = express.Router();
@@ -28,9 +29,10 @@ const getPriorityApi = async (url) => {
     }
 }
 
-router.get('/in-stock', async (req, res, next) => {
+router.get('/in-stock/:partname', async (req, res, next) => {
     try {
-        const url = "LOGPART?$filter=PARTNAME eq 'IMRP10243X'&$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE)";
+        const partname = req.params.partname;
+        const url = `LOGPART?$filter=PARTNAME eq '${partname}'&$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE)`;
 
         const response = await getPriorityApi(url);
         res.json(response.data.value)
@@ -77,9 +79,10 @@ router.get('/all-kits-in-stock', async (req, res, next) => {
 
 
 //Y_4795_5_ESHB - אתר, Y_8871_5_ESHB - תאור אתר
-router.get('/labs-list-supply', async (req, res, next) => {
+router.get('/labs-list-supply/:partname', async (req, res, next) => {
     try {
-        const url = "TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc";
+        const partname = req.params.partname;
+        const url = `TRANSORDER_DN?$filter=PARTNAME eq '${partname}' and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);
         res.json(response.data.value)

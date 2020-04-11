@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 const TABLE_TITLES = [{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
 const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`, `לאבטק סופליי קומפני`, `מדיפארם בע'מ`]
 
-const KitsSupply = () => {
+const KitsSupply = ({partname}) => {
     useHtmlTitle('Corona-kits-supply');
     const history = useHistory();
     const [kitsSupply, setKitsSupply] = useState([]);
@@ -26,10 +26,10 @@ const KitsSupply = () => {
     const [error, setError] = useState(null);
     //2020-04-05T00:00:00+02:00
 
-    const priorityApiLabsList = async () => {
+    const priorityApiLabsList = async (partname) => {
         try {
-            let result = await getPriorityApiLabsList();
-
+            let result = await getPriorityApiLabsList(partname);
+console.log(result)
             result = updateData(result);
             setCustomersList(listOfCustomers(result))
             setKitsSupply(result);
@@ -39,10 +39,10 @@ const KitsSupply = () => {
     }
 
     useEffect(() => {
-        priorityApiLabsList();
+        priorityApiLabsList(partname);
         const refreshSessionId = refreshData(priorityApiLabsList,600000);
         return ()=>{clearInterval(refreshSessionId)}
-    }, []);
+    }, [partname]);
 
 
     const logoutHandle = async () => {
@@ -191,7 +191,7 @@ const KitsSupply = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <SubHeader />
+                        <SubHeader partname={partname} />
                     </Row>
                     <Row>
                         <Col>
