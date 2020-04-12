@@ -123,11 +123,11 @@ export const getPriorityApiLabsList = (partname) => {
 };
 
 
-export const getPriorityApiLabsListByDate = (value) => {
+export const getPriorityApiLabsListByDate = (date,partname) => {
     return handler({
         method:'POST',
         url: '/api/priority-api/labs-list-supply-by-date',
-        data: value
+        data: {date,partname}
     });
 };
 

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table, Container, Row, Col, Alert, FormCheck, Form, DropdownButton, Dropdown } from 'react-bootstrap';
 // import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
-import { sort } from '../../../utils/io'
-import makeAnimated from 'react-select/animated';
+import { sort } from '../../../utils/io';
 
 const SearchByCustomer = ({ customersList, listSupply }) => {
     const [checkedCustomers, setCheckedCustomers] = useState([]);

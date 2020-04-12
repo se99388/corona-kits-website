@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {getPriorityApiKitInStock} from '../../services/api';
-const SubHeader = ({partname}) =>{
+const SubHeader = ({partname, descriptionItem}) =>{
 
-    console.log(partname)
     const [allKits, setAllKits] = useState([]);
     const [error, setError] = useState(null);
 
     const getKitDetail = async() =>{
         try{
             const response = await getPriorityApiKitInStock(partname);
-            console.log(response,"response")
             setAllKits(response);
         }
         catch(e){
@@ -18,20 +16,20 @@ const SubHeader = ({partname}) =>{
     };
 
     useEffect(()=>{
-        if(partname){
-            getKitDetail()
+        if (partname){
+            getKitDetail();
         }
-       
-    },[partname]);
+            
+    },[]);
 
     return(<>
 
-        {allKits.length && allKits.map((kit, key)=>
+        {allKits.length ? allKits.map((kit, key)=>
         <div key={key} style = {{textAlign:'center', margin: 'auto'}}>
-        <h4 >Available Corona kit {kit.PARTNAME} in stock:</h4>
+        <h4 >Available {descriptionItem} kit ({kit.PARTNAME}) in stock:</h4>
         <h3 style = {{backgroundColor:'#B5EAD7', fontWeight:'bold'}} >{kit.LOGCOUNTERS_SUBFORM[0].BALANCE} kits ({kit.LOGCOUNTERS_SUBFORM[0].BALANCE * 100} tests)</h3>
         </div>
-        )}
+        ):null}
 
         {error && <h3>{error}</h3>}
         </>  

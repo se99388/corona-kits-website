@@ -95,11 +95,12 @@ router.get('/labs-list-supply/:partname', async (req, res, next) => {
 
 router.post('/labs-list-supply-by-date', async (req, res, next) => {
     try {
-        const {startDate, endDate} = req.body;
-        console.log(startDate, endDate)
-        const url = `TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and CURDATE ge ${startDate} and CURDATE le ${endDate} and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
+        const {startDate, endDate} = req.body.date;
+        const {partname} = req.body;
+        const url = `TRANSORDER_DN?$filter=PARTNAME eq '${partname}' and STATDES eq 'סופית' and CURDATE ge ${startDate} and CURDATE le ${endDate} and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);
+        console.log( response)
         res.json(response.data.value)
     } catch (e) {
         let error = 'Server Error! please try again later';

@@ -1,59 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { logout, getPriorityApiLabsList, getPriorityApiLabsListByDate } from '../../services/api';
-import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
-import { KitsSupplyTable, TrWithColor, MyDiv, RowCenter } from './kits-supply.styled';
-import { useHistory } from 'react-router-dom';
+import { getPriorityApiLabsList, getPriorityApiLabsListByDate } from '../../services/api';
+import { Button, Table, Container, Row, Col, Alert} from 'react-bootstrap';
 import SubHeader from '../sub-header';
-import useHtmlTitle from '../../hooks/use-html-title';
 import SearchByCustomer from './search-by-customer';
 import KitsSum from './kits-sum';
 import Spinner from '../../utils/spinner/Spinner.js';
 import { renameValueInArr, sortByKey, updateData, refreshData } from '../../utils/io';
-import Calendar from '../ui/calendar';
-import Sort from '../ui/sort';
-import Popup from "reactjs-popup";
-import Nav from '../nav';
-import { Link } from 'react-router-dom';
+import SearchByDate from './search-by-date';
+import KitsSupplyTable from './kits-supply-table';
 
 const TABLE_TITLES = [{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
 const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`, `לאבטק סופליי קומפני`, `מדיפארם בע'מ`]
 
-const KitsSupply = ({partname}) => {
-    useHtmlTitle('Corona-kits-supply');
-    const history = useHistory();
+const KitsSupply = ({ partname, description }) => {
+
     const [kitsSupply, setKitsSupply] = useState([]);
     const [customersList, setCustomersList] = useState([]);
     const [error, setError] = useState(null);
-    //2020-04-05T00:00:00+02:00
+    const [isLoading, setIsLoading] = useState(true);
 
-    const priorityApiLabsList = async (partname) => {
+    const priorityApiLabsList = async () => {
         try {
+            setIsLoading(true);
             let result = await getPriorityApiLabsList(partname);
-console.log(result)
             result = updateData(result);
             setCustomersList(listOfCustomers(result))
             setKitsSupply(result);
+            setIsLoading(false);
         } catch (e) {
             setError(e.message);
         }
     }
 
     useEffect(() => {
-        priorityApiLabsList(partname);
-        const refreshSessionId = refreshData(priorityApiLabsList,600000);
-        return ()=>{clearInterval(refreshSessionId)}
+        priorityApiLabsList();
+        const refreshSessionId = refreshData(priorityApiLabsList, 600000);
+        return () => { clearInterval(refreshSessionId) }
     }, [partname]);
-
-
-    const logoutHandle = async () => {
-        const response = await logout();
-        if (response.success) {
-            history.push('/')
-        } else {
-            alert('Error')
-        }
-    }
-
 
     const listOfCustomers = (list) => {
         const newObj = list.reduce((accum, curr) => {
@@ -90,49 +73,7 @@ console.log(result)
         setKitsSupply(sortedTable)
         // console.log(sortedTable)
     }
-    const title = kitsSupply.length ? (
-        <tr>
-            <th>#</th>
-            {TABLE_TITLES.map((currentTitle, index) =>
-                Object.entries(currentTitle).map((item, index) =>
-                    <th
-                        key={index}
-                    >
-                        {/* <MyDiv>    
-                                   */}
-                        <RowCenter >
-                            <Col lg={6}>
-                                {item[1].toUpperCase()}
-                            </Col>
-                            <Col lg={6}>
-                                <Sort
-                                    sort={handleSort}
-                                    keyToSort={item[0]}
-                                />
-                            </Col>
-                        </RowCenter>
-                        {/* </MyDiv> */}
-                    </th>
-                ))}
-        </tr>
-    ) : null
-    let rowNum = 1;
-
-    const tableContent = (<>
-        {kitsSupply.map((currentContent, index) =>
-            <TrWithColor key={index}
-                marked={currentContent.Y_4795_5_ESHB != null ? 'blue' : null}
-            >
-                <td>{rowNum++}</td>
-                {Object.entries(currentContent).map((item, index) =>
-                    <td
-                        key={index} name={item[0]}>
-                        {item[1] || "Empty"}
-                    </td>
-                )}
-            </TrWithColor>)
-        }
-    </>)
+  
     const kitsQuant = () => {
         const result = kitsSupply.reduce((accum, curr) => {
             return accum + curr.TQUANT;
@@ -144,7 +85,7 @@ console.log(result)
         try {
             setKitsSupply([])
 
-            let result = await getPriorityApiLabsListByDate(dates);
+            let result = await getPriorityApiLabsListByDate(dates, partname);
             if (result.error) {
                 setError(result.error)
             }
@@ -160,26 +101,13 @@ console.log(result)
     }
     // console.log("kitsSupply", kitsSupply)
     return (
-        <Container >
-            {!kitsSupply.length ? <Spinner /> :
+        <Container className='mt-3'>
+            {isLoading ? <Spinner /> :
                 <>
-
-            {/* <Nav /> */}
-
-                    <Row >
-                        <Col>
-                            <Button className="mb-3 float-right" onClick={logoutHandle}>Log out </Button>
-                        </Col>
-                    </Row>
                     <Row>
-                    <Col>
-                            <Popup trigger={<Button variant='light' className="mb-3">Filter by date</Button>} position="right center">
-                                <div>    <Calendar
-                                    apiByDate={priorityApiLabsListByDate}
-                                /></div>
-                            </Popup>
+                        <Col>
+                            <SearchByDate apiByDate={priorityApiLabsListByDate} />
                         </Col>
-
                         <SearchByCustomer
                             customersList={customersList}
                             listSupply={setKitsSupply}
@@ -191,18 +119,18 @@ console.log(result)
                         </Col>
                     </Row>
                     <Row>
-                        <SubHeader partname={partname} />
+                        <SubHeader 
+                        partname={partname}
+                        descriptionItem={description} 
+                        />
                     </Row>
                     <Row>
                         <Col>
-                            < KitsSupplyTable striped bordered hover responsive="xs">
-                                <thead>
-                                    {title}
-                                </thead>
-                                <tbody>
-                                    {tableContent}
-                                </tbody>
-                            </KitsSupplyTable >
+                        <KitsSupplyTable 
+                        kitsSupply={kitsSupply}
+                        tableTitles={TABLE_TITLES}
+                        sort={handleSort}
+                        />         
                         </Col>
                     </Row>
                     <KitsSum totalNumKits={kitsQuant()} /></>}
