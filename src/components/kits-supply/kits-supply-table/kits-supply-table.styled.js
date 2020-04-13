@@ -17,7 +17,9 @@ export const MyDiv=styled.div`
  }
 `
 export const MyTable = styled(Table)`
-  td:nth-of-type(3), td:nth-of-type(8), td:nth-of-type(9), td:nth-of-type(10){
+   td:nth-of-type(3), td:nth-of-type(8), td:nth-of-type(9), td:nth-of-type(10),
+   th:nth-of-type(3), th:nth-of-type(8)
+   {
     display: none;
  }
 
@@ -27,15 +29,6 @@ export const MyTable = styled(Table)`
  
  }
 
- @media screen and (max-width: 445px) {
-    td, th {
-    font-size:85%;
-   
-  }
-  td:nth-of-type(1),th:nth-of-type(1),th:nth-of-type(2), td:nth-of-type(2){
-    display: none;
- }
-}
 
  @media screen and (max-width: 780px) {
     td, th {
@@ -46,6 +39,16 @@ export const MyTable = styled(Table)`
     display: none;
  }
 }
+@media screen and (max-width: 550px) {
+    td, th {
+    font-size:85%;
+   
+  }
+  td:nth-of-type(1), th:nth-of-type(1), th:nth-of-type(4), td:nth-of-type(4){
+    display: none;
+ }
+}
+
 `
 
 export const RowCenter = styled(Row)`

@@ -8,9 +8,9 @@ const SubHeader = ({partname, descriptionItem,products}) =>{
     const getKitDetail = async() =>{
         try{
             const response = await getPriorityApiKitInStock(partname);
-            console.log(response)
-            const newArr = addValue(response,products);
-            console.log(newArr)
+            
+            addValue(response,products);
+    
             setAllKits(response);
         }
         catch(e){
@@ -19,7 +19,7 @@ const SubHeader = ({partname, descriptionItem,products}) =>{
     };
 
     const addValue = (arr,obj)=>{
-        return arr.map((item,index)=>{
+        arr.map((item,index)=>{
             const objDesc = obj[item.PARTNAME].desc;
             item.desc=objDesc;
             return item

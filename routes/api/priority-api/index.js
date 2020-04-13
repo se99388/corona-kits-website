@@ -33,7 +33,6 @@ router.get('/in-stock/:partname', async (req, res, next) => {
     try {
         // const partname = req.params.partname;
         const partname = JSON.parse(req.params.partname);
-        console.log("partname-in-stock:",partname)
         const oDataText = `PARTNAME eq '${partname.join(`' or PARTNAME eq '`)}'`;
         const url = `LOGPART?$filter=${oDataText}&$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE)`;
 
@@ -76,20 +75,14 @@ router.get('/all-kits-in-stock', async (req, res, next) => {
         res.json({ error });
     }
 })
-// TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and CURDATE ge 2020-03-31 and CURDATE le 2020-04-04 and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc
 
-// TRANSORDER_DN?$filter=PARTNAME eq 'IMRP10243X' and STATDES eq 'סופית' and CURDATE ge '' and CURDATE le '' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc 
-
-
-//Y_4795_5_ESHB - אתר, Y_8871_5_ESHB - תאור אתר
 router.get('/labs-list-supply/:partname', async (req, res, next) => {
     try {
         const partname = JSON.parse(req.params.partname);
-        console.log("partname:",partname)
+        const startDate='2020-03-12'
         const oDataText = `PARTNAME eq '${partname.join(`' or PARTNAME eq '`)}'`;
-        console.log("oDataText",oDataText)
-        // oDataText += partname.join()
-        const url = `TRANSORDER_DN?$filter=(${oDataText}) and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
+
+        const url = `TRANSORDER_DN?$filter=(${oDataText}) and STATDES eq 'סופית' and CURDATE ge ${startDate} and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);
         res.json(response.data.value)
@@ -104,9 +97,7 @@ router.post('/labs-list-supply-by-date', async (req, res, next) => {
     try {
         const {startDate, endDate} = req.body.date;
         const {partname} = req.body;
-        console.log("ofir1",req.body.partname)
-        // const partname = JSON.parse(req.body.partname);
-        // console.log("ofir",partname)
+ 
         const oDataText = `PARTNAME eq '${partname.join(`' or PARTNAME eq '`)}'`;
         const url = `TRANSORDER_DN?$filter=(${oDataText}) and STATDES eq 'סופית' and CURDATE ge ${startDate} and CURDATE le ${endDate} and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc`;
         const encodedURI = encodeURI(url);

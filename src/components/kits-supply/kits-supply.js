@@ -10,7 +10,7 @@ import SearchByDate from './search-by-date';
 import KitsSupplyTable from './kits-supply-table';
 import {data} from '../all-kits-status/data';
 
-const TABLE_TITLES = [{ PARTNAME: "CATALOG NUM" },{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
+const TABLE_TITLES = [{ PARTNAME: "CATALOG NUM" },{STATDES:"STATDES"},{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" },{CUSTNAME:"CUSTNAME"}];
 const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`, `לאבטק סופליי קומפני`, `מדיפארם בע'מ`]
 
 const KitsSupply = ({ partname, description,products }) => {
@@ -156,7 +156,7 @@ const KitsSupply = ({ partname, description,products }) => {
                     partnames={partname}
                     />
                     <Row>
-                        <Col>
+                        <Col  style={{padding:'5px'}}>
                         <KitsSupplyTable 
                         kitsSupply={kitsSupply}
                         tableTitles={TABLE_TITLES}
