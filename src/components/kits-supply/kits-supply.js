@@ -8,11 +8,12 @@ import Spinner from '../../utils/spinner/Spinner.js';
 import { renameValueInArr, sortByKey, updateData, refreshData } from '../../utils/io';
 import SearchByDate from './search-by-date';
 import KitsSupplyTable from './kits-supply-table';
+import {data} from '../all-kits-status/data';
 
-const TABLE_TITLES = [{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
+const TABLE_TITLES = [{ PARTNAME: "CATALOG NUM" },{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" }];
 const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`, `לאבטק סופליי קומפני`, `מדיפארם בע'מ`]
 
-const KitsSupply = ({ partname, description }) => {
+const KitsSupply = ({ partname, description,products }) => {
 
     const [kitsSupply, setKitsSupply] = useState([]);
     const [customersList, setCustomersList] = useState([]);
@@ -23,6 +24,7 @@ const KitsSupply = ({ partname, description }) => {
         try {
             setIsLoading(true);
             let result = await getPriorityApiLabsList(partname);
+            // console.log("result",result)
             result = updateData(result);
             setCustomersList(listOfCustomers(result))
             setKitsSupply(result);
@@ -75,12 +77,35 @@ const KitsSupply = ({ partname, description }) => {
     }
   
     const kitsQuant = () => {
+        // console.log(kitsSupply)
         const result = kitsSupply.reduce((accum, curr) => {
             return accum + curr.TQUANT;
         }, 0)
         return result
     }
-
+    // PARTNAME: "IMRP10243X"
+    // STATDES: "פורקה"
+    // DOCDES: "אריזות ללקוח"
+    // CDES: "ד"ר חיים בן צבי - בי"ח בלינסון"
+    // TQUANT: 4
+    // CURDATE: "2020-04-13"
+    // CUSTNAME: "200737"
+    // Y_8871_5_ESHB: null
+    // Y_4795_5_ESHB: null
+    const kitsQuantObj = () => {
+        console.log(kitsSupply)
+        const result = kitsSupply.reduce((accum, curr) => {
+            if (!accum[curr.PARTNAME]){
+                accum[curr.PARTNAME]={sum:0};
+                // accum[curr.PARTNAME].sum = 0;
+            }
+            accum[curr.PARTNAME].sum +=curr.TQUANT
+            return accum;
+        }, {})
+        console.log("reduce",result)
+        return result
+    }
+    kitsQuantObj()
     const priorityApiLabsListByDate = async (dates) => {
         try {
             setKitsSupply([])
@@ -122,8 +147,14 @@ const KitsSupply = ({ partname, description }) => {
                         <SubHeader 
                         partname={partname}
                         descriptionItem={description} 
+                        products={products}
                         />
                     </Row>
+                    <KitsSum 
+                    totalNumKits={kitsQuantObj()} 
+                    products={products}
+                    partnames={partname}
+                    />
                     <Row>
                         <Col>
                         <KitsSupplyTable 
@@ -133,7 +164,7 @@ const KitsSupply = ({ partname, description }) => {
                         />         
                         </Col>
                     </Row>
-                    <KitsSum totalNumKits={kitsQuant()} /></>}
+                    </>}
 
             {error && <Alert variant="danger">{error}</Alert>}
         </Container >

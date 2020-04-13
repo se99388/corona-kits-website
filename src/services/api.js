@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { stringify } from 'querystring';
 
 const instance = axios.create({
     baseURL: '/',
@@ -99,8 +100,9 @@ export const logout = () => {
 
 
 export const getPriorityApiKitInStock = (partname) => {
+    const data = JSON.stringify(partname);
     return handler({
-        url:`/api/priority-api/in-stock/${partname}`
+        url:`/api/priority-api/in-stock/${data}`
     });
 };
 
@@ -117,8 +119,9 @@ export const getPriorityApiAllKitsInStock = () => {
 };
 
 export const getPriorityApiLabsList = (partname) => {
+    const data = JSON.stringify(partname);
     return handler({
-        url: `/api/priority-api/labs-list-supply/${partname}`
+        url: `/api/priority-api/labs-list-supply/${data}`
     });
 };
 
