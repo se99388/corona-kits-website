@@ -27,6 +27,7 @@ const CORONA_ITEMS_OBJ =
 const CoronaKitsUsers = () => {
     useHtmlTitle('Corona-kits-users');
     const [catalogNum, setCatalogNum] = useState('IMRP10243X');
+    
     return (
         <MyTabs id="controlled-tab-example"
             //this is the default open tab 

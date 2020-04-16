@@ -1,49 +1,83 @@
-import React, {useEffect, useState} from 'react';
-import {getPriorityApiKitInStock} from '../../services/api';
-const SubHeader = ({partname, descriptionItem,products}) =>{
+import React, { useEffect, useState } from 'react';
+import { getPriorityApiKitInStock } from '../../services/api';
+import KitsSum from '../kits-supply/kits-sum';
+import KitsStock from './kits-stock';
+import { Card, Board } from './sub-header.styled'
+const SubHeader = ({ partname, descriptionItem, products, kitsSupply }) => {
 
     const [allKits, setAllKits] = useState([]);
     const [error, setError] = useState(null);
 
-    const getKitDetail = async() =>{
-        try{
+    const getKitDetail = async () => {
+        try {
             const response = await getPriorityApiKitInStock(partname);
-            
-            addValue(response,products);
-    
+            addValue(response, products);
             setAllKits(response);
         }
-        catch(e){
+        catch (e) {
             setError(e.message)
         }
     };
 
-    const addValue = (arr,obj)=>{
-        arr.map((item,index)=>{
+    const addValue = (arr, obj) => {
+        arr.map((item, index) => {
             const objDesc = obj[item.PARTNAME].desc;
-            item.desc=objDesc;
+            item.desc = objDesc;
             return item
         })
     }
 
-    useEffect(()=>{
-        if (partname){
+    useEffect(() => {
+        if (partname) {
             getKitDetail();
         }
-            
-    },[]);
 
-    return(<>
+    }, []);
+    const kitsQuantByPartname = () => {
+        console.log(kitsSupply)
+        const result = kitsSupply.reduce((accum, curr) => {
+            if (!accum[curr.PARTNAME]) {
+                accum[curr.PARTNAME] = { sum: 0 };
+                // accum[curr.PARTNAME].sum = 0;
+            }
+            accum[curr.PARTNAME].sum += curr.TQUANT
+            return accum;
+        }, {})
+        console.log("reduce", result)
+        return result
+    }
 
-        {allKits.length ? allKits.map((kit, key)=>
-        <div key={key} style = {{textAlign:'center', margin: 'auto'}}>
-        <h5 >Available {kit.desc} kit ({kit.PARTNAME}) in stock:</h5>
-        <h4 style = {{backgroundColor:'#B5EAD7', fontWeight:'bold'}} >{kit.LOGCOUNTERS_SUBFORM[0].BALANCE} kits ({kit.LOGCOUNTERS_SUBFORM[0].BALANCE * products[kit.PARTNAME].number_units_in_box} tests)</h4>
-        </div>
-        ):null}
+    const kitsQuantObj = kitsQuantByPartname()
+    return (
+        <>
+        <Board>
+                {allKits.length ? allKits.map((kit, key) =>
+                    <Card key={key}>
+                     <h6 style={{fontWeight: 'bold', textAlign:'center' }}>{kit.desc} kit ({kit.PARTNAME})</h6>
+                    <KitsStock
+                        kit={kit}
+                        numberUnitsInKit={products[kit.PARTNAME].number_units_in_box}
+                    />
+                        <KitsSum
+                            partname={kit.PARTNAME}
+                            numberUnitsInKit={products[kit.PARTNAME].number_units_in_box}
+                            quantity={kitsQuantObj[kit.PARTNAME] && kitsQuantObj[kit.PARTNAME].sum}
+                        />
+                      </Card>
+                    ) : null}
+                   </Board>
 
-        {error && <h3>{error}</h3>}
-        </>  
+                {/* {Object.keys(kitsQuantObj) ? Object.keys(kitsQuantObj).map((partname, index) => <KitsSum
+                    key={index}
+                    partname={partname}
+                    numberUnitsInKit={products[partname].number_units_in_box}
+                    quantity={kitsQuantObj[partname].sum}
+                />
+               
+                ) : null} */}
+                {error && <h3>{error}</h3>}
+           
+                </>
     )
 }
 

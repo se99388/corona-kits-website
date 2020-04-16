@@ -105,7 +105,7 @@ const KitsSupply = ({ partname, description,products }) => {
         console.log("reduce",result)
         return result
     }
-    kitsQuantObj()
+    // kitsQuantObj()
     const priorityApiLabsListByDate = async (dates) => {
         try {
             setKitsSupply([])
@@ -143,19 +143,15 @@ const KitsSupply = ({ partname, description,products }) => {
                             <Button variant='info' onClick={priorityApiLabsList}>Refresh </Button>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="justify-content-center mt-2">
                         <SubHeader 
                         partname={partname}
                         descriptionItem={description} 
                         products={products}
+                        kitsSupply={kitsSupply}
                         />
                     </Row>
-                    <KitsSum 
-                    totalNumKits={kitsQuantObj()} 
-                    products={products}
-                    partnames={partname}
-                    />
-                    <Row>
+                    <Row className="mt-2">
                         <Col  style={{padding:'5px'}}>
                         <KitsSupplyTable 
                         kitsSupply={kitsSupply}
