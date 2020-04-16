@@ -1,3 +1,5 @@
+const CUSTOMERS_TO_JOIN = [`ביוטק מדיקל סאפליי - עייאד רבי`, `לאבטק סופליי קומפני`, `מדיפארם בע'מ`]
+
 export const sort = (arrToSort) =>
     arrToSort.sort((a, b) => {
         let nameA = a.label.toUpperCase(); // ignore upper and lowercase
@@ -66,6 +68,37 @@ item.CURDATE =item.CURDATE.replace(/T.+/g,"")
 
 const editObject = (obj, keyToEdit, keyToAdd) => {
     obj = (obj[keyToAdd]) ? obj[keyToEdit] = `${obj[keyToAdd]}` : null;
+}
+
+
+export const listOfCustomers = (list) => {
+    const newObj = list.reduce((accum, curr) => {
+        if (!accum[curr.CDES])
+            accum[curr.CDES] = []
+        accum[curr.CDES].push(curr)
+        return accum;
+    }, {})
+
+    //add new customer name to the customer list object - it is mutating object
+    joinCustomersUnderNewKey(newObj)
+    // console.log(newObj)
+    return newObj
+
+}
+
+export const joinCustomersUnderNewKey = (currentObj, newKey = 'לקוחות פלשתינאים') => {
+    CUSTOMERS_TO_JOIN.map(name => {
+        if (currentObj[name]) {
+            const oldKey = name;
+            if (!currentObj[newKey]) {
+                currentObj[newKey] = []
+            }
+            currentObj[newKey].push(...currentObj[oldKey])
+            delete currentObj[oldKey]
+        }
+    })
+    //change customer name in each object int the array to the new key name = 'לקוחות פלשתינאים'
+    currentObj[newKey] && renameValueInArr(currentObj[newKey], 'CDES', newKey)
 }
 
 export const refreshData=(cb,time)=>setInterval(cb,time);

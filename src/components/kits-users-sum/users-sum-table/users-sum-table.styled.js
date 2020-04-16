@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
 
-export const TrWithColor =styled.tr`
-color:${props=>props.marked};
-`
+
 export const GeneralTable= styled(Table)`
  td, th{
     text-align: center; 
