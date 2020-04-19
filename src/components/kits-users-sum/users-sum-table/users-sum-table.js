@@ -43,7 +43,7 @@ const UsersSumTable=({tableOrderData, tableContent, sort})=>{
         }
        </> )
     return(
-        < GeneralTable striped bordered hover responsive="xs">
+        < GeneralTable striped bordered hover responsive="xs" className="mt-3">
         <thead>
             {title}
         </thead>
