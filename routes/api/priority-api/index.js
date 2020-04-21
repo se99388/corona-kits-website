@@ -28,12 +28,12 @@ const getPriorityApi = async (url) => {
         throw e
     }
 }
-
+//Corona-kits-users - sub-header
 router.get('/in-stock/:partname', async (req, res, next) => {
     try {
         // const partname = req.params.partname;
         const partname = JSON.parse(req.params.partname);
-        const oDataText = `PARTNAME eq '${partname.join(`' or PARTNAME eq '`)}'`;
+        const oDataText = `(PARTNAME eq '${partname.join(`' or PARTNAME eq '`)}')`;
         const url = `LOGPART?$filter=${oDataText}&$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE)`;
 
         const response = await getPriorityApi(url);
@@ -45,24 +45,20 @@ router.get('/in-stock/:partname', async (req, res, next) => {
     }
 })
 
+//Corona-stock-status notes
 router.get('/all-kits-in-stock-notes', async (req, res, next) => {
-    try {
-        //without select
-        // const url = "PORDERS?$filter=SUPNAME eq '55921' or SUPNAME eq '57046' or SUPNAME eq '55222' or SUPNAME eq '55289' or SUPNAME eq '55697' and CLOSEDBOOL eq ''&$expand=PORDERITEMS_SUBFORM($filter=CLOSEDBOOL eq '' and (PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'IM235905' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'IM235903' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IMSDP0096');$expand=PORDERITEMSTEXT_SUBFORM)";
-
-        //with select
-        
+    try { 
         const url = "PORDERS?$filter=SUPNAME eq '55921' or SUPNAME eq '57046' or SUPNAME eq '55222' or SUPNAME eq '55289' or SUPNAME eq '55697' or SUPNAME eq '55044' or SUPNAME eq '57271' or SUPNAME eq '55349' and CLOSEDBOOL eq ''&$expand=PORDERITEMS_SUBFORM($filter=CLOSEDBOOL eq '' and (PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'IM235905' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'IM235903' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'MBC0097' or PARTNAME eq 'IMHW4412' or PARTNAME eq 'IMR2141'); $select=KLINE,PARTNAME,PDES,CLOSEDBOOL;$expand=PORDERITEMSTEXT_SUBFORM)&$select=SUPNAME,CURDATE,STATDES,ORDNAME";
 
         const response = await getPriorityApi(url);
         res.json(response.data.value)
     } catch (e) {
         let error = 'Server Error! please try again later';
-        console.log(e)
+        console.error(e)
         res.json({ error });
     }
 })
- 
+ //Corona-stock-status 
 router.get('/all-kits-in-stock', async (req, res, next) => {
     try {
         const url = "LOGPART?$filter=PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IM235905' or PARTNAME eq 'IM235903' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'MBC0097' or PARTNAME eq 'IMHW4412' or PARTNAME eq 'IMR2141' &$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE,PORDERS)";
@@ -75,7 +71,7 @@ router.get('/all-kits-in-stock', async (req, res, next) => {
         res.json({ error });
     }
 })
-
+//Corona-kits-users + Summery
 router.get('/labs-list-supply/:partname', async (req, res, next) => {
     try {
         const partname = JSON.parse(req.params.partname);
@@ -93,6 +89,7 @@ router.get('/labs-list-supply/:partname', async (req, res, next) => {
     }
 })
 
+//Corona-kits-users + Summery
 router.post('/labs-list-supply-by-date', async (req, res, next) => {
     try {
         const {startDate, endDate} = req.body.date;
