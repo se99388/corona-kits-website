@@ -3,9 +3,9 @@ import axios from 'axios';
 import express from 'express';
 const router = express.Router();
 
-const Authorization = 'Basic QVBJOjEyMzQ';
+const Authorization = process.env.PRIORITY_AUTHORIZATION;
 const instance = axios.create({
-    baseURL: 'https://priority.hylabs.co.il/odata/Priority/tabula.ini/h250718/',
+    baseURL: process.env.PRIORITY_URL,
     timeout: 8000,
     method: 'get',
     headers: {
@@ -13,8 +13,8 @@ const instance = axios.create({
         'Content-type': 'application/json'
     },
     auth: {
-        username: 'API',
-        password: '1234'
+        username: process.env.PRIORITY_USERNAME,
+        password: process.env.PRIORITY_PASS
     },
 });
 
