@@ -8,7 +8,7 @@ const createDataObj = (number_units_in_box, unit_per_sample,desc='') => {
         desc
     }
 }
-
+//This state create the "corona stock status" page and the sub-header in the "corona-kits-users" page
 export const data = {
     IM235905: createDataObj(3840, 6.5),
     IM235903: createDataObj(5760, 2),
@@ -21,7 +21,9 @@ export const data = {
     CAP250: createDataObj(1, 1),
     MBC0097: createDataObj(768, 1),
     IMHW4412: createDataObj(50, 1, 'RT-PCR BGI' ),
-    IMR2141: createDataObj(384, 1,'Extract. Zymo')
+    IMR2141: createDataObj(384, 1,'Extract. Zymo'),
+    IMMVN40004:createDataObj(96, 1,'VIRAL. NO.202'),
+    IMMVN40006:createDataObj(96, 1,'MAGCORE VIRAL. NO.203')
 }
 
 export const tableOrderData = [

@@ -12,8 +12,7 @@ import {data} from '../all-kits-status/data';
 
 const TABLE_TITLES = [{ PARTNAME: "CATALOG NUM" },{STATDES:"STATDES"},{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" },{CUSTNAME:"CUSTNAME"}];
 
-const KitsSupply = ({ partname, description,products }) => {
-
+const KitsSupply = ({ partname,products }) => {
     const [kitsSupply, setKitsSupply] = useState([]);
     const [customersList, setCustomersList] = useState([]);
     const [error, setError] = useState(null);
@@ -86,7 +85,6 @@ const KitsSupply = ({ partname, description,products }) => {
                     <Row className="justify-content-center mt-2">
                         <SubHeader 
                         partname={partname}
-                        descriptionItem={description} 
                         products={products}
                         kitsSupply={kitsSupply}
                         />

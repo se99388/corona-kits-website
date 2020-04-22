@@ -5,24 +5,19 @@ import useHtmlTitle from '../../hooks/use-html-title';
 import { MyTabs } from './corona-kits-users.styled';
 import {data} from '../all-kits-status/data'
 
-
+//This state create the "corona kits users" page
 const CORONA_ITEMS =
     [
         { num: ['IMRP10243X'], desc: 'RT-PCR Seegene' },
         { num: ['IM7443004U'], desc: 'Extract. Seegene' },
         { num: ['IMHW4412'], desc: 'RT-PCR BGI' },
         { num: ['IMR2141'], desc: 'Extract. Zymo' },
-        { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141'], desc: 'All'}
+        //VIRAL NUCLEIC ACID 96T NO.202-MVN40004
+        { num: ['IMMVN40004'], desc: 'VIRAL. NO.202' },
+        // 'MAGCORE VIRAL NUCLEIC ACID 96T NO.203-MVN40006' 
+        { num: ['IMMVN40006'], desc: 'MAGCORE VIRAL. NO.203' },
+        { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141','IMMVN40004','IMMVN40006'], desc: 'All'}
     ];
-
-const CORONA_ITEMS_OBJ =
-{
-    IMRP10243X: { num: ['IMRP10243X'], desc: 'RT-PCR Seegene' },
-    IM7443004U: { num: ['IM7443004U'], desc: 'Extract. Seegene' },
-    IMHW4412: { num: ['IMHW4412'], desc: 'RT-PCR BGI' },
-    IMR2141: { num: ['IMR2141'], desc: 'Extract. Zymo' },
-    all: { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141'], desc: ['RT-PCR Seegene', 'Extract. Seegene', 'RT-PCR BGI', 'Extract. Zymo'] }
-};
 
 const CoronaKitsUsers = () => {
     useHtmlTitle('Corona-kits-users');
@@ -44,7 +39,6 @@ const CoronaKitsUsers = () => {
                     <KitsSupply
                         key={index}
                         partname={item.num}
-                        description={item.desc}
                         products={data}
                     />
                 </Tab>

@@ -35,8 +35,9 @@ const AllKitsStatus = () => {
             textForProduct = []
             const response = await getPriorityApiAllKitsInStock();
             const response1 = await getPriorityApiAllKitsInStockNotes();
+            console.log(response1,response)
             if (response1.length && response.length) {
-                // console.log(response1)
+                console.log(response1,response)
                 response1.map(order => {
                     return order.PORDERITEMS_SUBFORM.filter((product) => {
                         if (product.PORDERITEMSTEXT_SUBFORM.length > 0) {
