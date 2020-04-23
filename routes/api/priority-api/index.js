@@ -28,7 +28,7 @@ const getPriorityApi = async (url) => {
         throw e
     }
 }
-//Corona-kits-users - sub-header
+//Corona-kits-users - sub-header - In Stock
 router.get('/in-stock/:partname', async (req, res, next) => {
     try {
         // const partname = req.params.partname;
@@ -75,24 +75,27 @@ router.get('/all-kits-in-stock', async (req, res, next) => {
 //Corona-kits-users + Summery
 router.get('/labs-list-supply/:partname', async (req, res, next) => {
     try {
-        const baseUrl =` and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc` 
+        const baseUrl =` and STATDES eq 'סופית' and (DOCDES eq 'משלוחים ללקוח' or DOCDES eq 'החזרה מלקוח')&$select=PARTNAME,STATDES,DOCDES,CDES,TQUANT,CURDATE,CUSTNAME,Y_8871_5_ESHB,Y_4795_5_ESHB&$orderby=CURDATE desc` 
         let url = '';
         const startDate = '2020-03-12';
         const partname = JSON.parse(req.params.partname);
-// 'IMRP10243X' has no date limitation and this is why he has different query
-        const IMRP10243X = partname.find((singlePartname, index) => {
-            if (singlePartname === 'IMRP10243X') {
+
+            // 'IMRP10243X' has no date limitation and this is why he has different query
+
+        const noDatePartname = 'IMRP10243X'
+
+        const noDatePartname_found = !!partname.filter((singlePartname, index) => {
+            if (singlePartname === noDatePartname) {
                 partname.splice([index], 1);
                 return singlePartname
             };
         });
+
+        const noDatePartname_query = noDatePartname_found ? ` or PARTNAME eq '${noDatePartname}'` : ``;
+
         const oDataText = `PARTNAME eq '${partname.join(`' or PARTNAME eq '`)}'`;
-        if (IMRP10243X) {
-            const oDataIMRP10243X = `(PARTNAME eq '${IMRP10243X}' and STATDES eq 'סופית')`
-            url = `TRANSORDER_DN?$filter=((${oDataText}) and STATDES eq 'סופית' and CURDATE ge ${startDate}) or ${oDataIMRP10243X}${baseUrl}`;
-        } else {
-            url = `TRANSORDER_DN?$filter=(${oDataText}) and STATDES eq 'סופית' and CURDATE ge ${startDate}${baseUrl}`;
-        }
+        
+        url = `TRANSORDER_DN?$filter=((${oDataText} and CURDATE ge ${startDate})${noDatePartname_query})${baseUrl}`;
 
         const encodedURI = encodeURI(url);
         const response = await getPriorityApi(encodedURI);

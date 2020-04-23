@@ -34,9 +34,6 @@ const App = () => {
                     >
                     </Route>
                 </Col>
-                {/* <Col xs={{ span: 3, offset: 6 }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image src="/images/moh_clear.png" style={{ width: '100%' }} />
-                </Col> */}
             </Row>
             <Row>
                 <br />
@@ -48,30 +45,13 @@ const App = () => {
                             if (!isAuth()) {
                                 return <Login />
                             } else {
-                                // return <Redirect to="/kits-supply" />;
                                 return <Nav />
                             }
                         }}
                     >
 
                     </Route>
-                    {/* <Route exact path="/kits-supply"
-                     render={(props) => {
-                        if (isAuth()) {
-                            return<KitsSupply />
-                        } else {
-                            return <Redirect to="/" />;
-                        }}}>
-                    </Route> */}
-                    {/* <Route exact path='/all-kits-status'                    
-                    render={(props) => {
-                        if (isAuth()) {
-                            return  < AllKitsSupply/>
-                        } else {
-                            return <Redirect to="/" />;
-                        }}}>
-                    </Route> */}
-                    <Route exact path="/admin"
+                    {/* <Route exact path="/admin"
                         render={(props) => {
                             if (isAuth()) {
                                 return <Admin />
@@ -79,7 +59,7 @@ const App = () => {
                                 return <Redirect to="/" />;
                             }
                         }}>
-                    </Route>
+                    </Route> */}
                     <Route>
                         <Redirect to="/" />
                     </Route>

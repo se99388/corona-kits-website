@@ -83,6 +83,8 @@ export const updateKit = (value) => {
     });
 };
 
+
+//auth:
 export const login = (username, password) => {
     return handler({
         url: '/auth/login',
@@ -98,7 +100,7 @@ export const logout = () => {
     })
 }
 
-
+//api priority
 export const getPriorityApiKitInStock = (partname) => {
     const data = JSON.stringify(partname);
     return handler({
@@ -119,6 +121,7 @@ export const getPriorityApiAllKitsInStock = () => {
 };
 
 export const getPriorityApiLabsList = (partname) => {
+    console.log(partname)
     const data = JSON.stringify(partname);
     return handler({
         url: `/api/priority-api/labs-list-supply/${data}`
