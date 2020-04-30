@@ -16,9 +16,9 @@ const CORONA_ITEMS =
         { num: ['IMMVN40004'], desc: 'VIRAL. NO.202' },
         // 'MAGCORE VIRAL NUCLEIC ACID 96T NO.203-MVN40006' 
         { num: ['IMMVN40006'], desc: 'MAGCORE VIRAL. NO.203' },
-        { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141', 'IMMVN40004', 'IMMVN40006'], desc: 'All' }
+        { num: ['IMEX00014C'], desc: 'STARMAG VIRAL/DNA' },
+        { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141', 'IMMVN40004', 'IMMVN40006', 'IMEX00014C'], desc: 'All' }
     ];
-
 const CoronaKitsUsers = () => {
     useHtmlTitle('Corona-kits-users');
     // const [catalogNum, setCatalogNum] = useState('IMRP10243X');

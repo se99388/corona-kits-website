@@ -12,7 +12,7 @@ const SubHeader = ({ partname, products, kitsSupply }) => {
         try {
             const response = await getPriorityApiKitInStock(partname);
             addDescValue(response, products);
-            console.log("response",response)
+            // console.log("response",response)
             setAllKits(response);
         }
         catch (e) {
@@ -35,7 +35,7 @@ const SubHeader = ({ partname, products, kitsSupply }) => {
 
     }, []);
     const kitsQuantByPartname = () => {
-        console.log(kitsSupply)
+        // console.log(kitsSupply)
         const result = kitsSupply.reduce((accum, curr) => {
             if (!accum[curr.PARTNAME]) {
                 accum[curr.PARTNAME] = { sum: 0 };
@@ -44,7 +44,7 @@ const SubHeader = ({ partname, products, kitsSupply }) => {
             accum[curr.PARTNAME].sum += curr.TQUANT
             return accum;
         }, {})
-        console.log("reduce", result)
+        // console.log("reduce", result)
         return result
     }
 

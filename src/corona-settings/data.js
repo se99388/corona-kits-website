@@ -24,7 +24,8 @@ export const data = {
     IMHW4412: createDataObj(50, 1, 'RT-PCR BGI','IMHW4412' ),
     IMR2141: createDataObj(384, 1,'Extract. Zymo','IMR2141'),
     IMMVN40004:createDataObj(96, 1,'VIRAL. NO.202','IMMVN40004'),
-    IMMVN40006:createDataObj(96, 1,'MAGCORE VIRAL. NO.203','IMMVN40006')
+    IMMVN40006:createDataObj(96, 1,'MAGCORE VIRAL. NO.203','IMMVN40006'),
+    IMEX00014C:createDataObj(384, 1,'STARMAG VIRAL/DNA','IMEX00014C')
 }
 
 export const tableOrderData = [

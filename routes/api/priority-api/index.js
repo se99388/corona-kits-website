@@ -48,8 +48,8 @@ router.get('/in-stock/:partname', async (req, res, next) => {
 //Corona-stock-status notes
 router.get('/all-kits-in-stock-notes', async (req, res, next) => {
     try {
-
-        const url = "PORDERS?$filter=SUPNAME eq '55921' or SUPNAME eq '57046' or SUPNAME eq '55222' or SUPNAME eq '55289' or SUPNAME eq '55697' or SUPNAME eq '55044' or SUPNAME eq '57271' or SUPNAME eq '55349' or SUPNAME eq '56110' and CLOSEDBOOL eq ''&$expand=PORDERITEMS_SUBFORM($filter=CLOSEDBOOL eq '' and (PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'IM235905' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'IM235903' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'MBC0097' or PARTNAME eq 'IMHW4412' or PARTNAME eq 'IMR2141' or PARTNAME eq 'IMMVN40004' or PARTNAME eq 'IMMVN40006'); $select=KLINE,PARTNAME,PDES,CLOSEDBOOL;$expand=PORDERITEMSTEXT_SUBFORM)&$select=SUPNAME,CURDATE,STATDES,ORDNAME";
+        
+        const url = "PORDERS?$filter=SUPNAME eq '55921' or SUPNAME eq '57046' or SUPNAME eq '55222' or SUPNAME eq '55289' or SUPNAME eq '55697' or SUPNAME eq '55044' or SUPNAME eq '57271' or SUPNAME eq '55349' or SUPNAME eq '56110' and CLOSEDBOOL eq ''&$expand=PORDERITEMS_SUBFORM($filter=CLOSEDBOOL eq '' and (PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'IM235905' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'IM235903' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'MBC0097' or PARTNAME eq 'IMHW4412' or PARTNAME eq 'IMR2141' or PARTNAME eq 'IMMVN40004' or PARTNAME eq 'IMMVN40006' or PARTNAME eq 'IMEX00014C'); $select=KLINE,PARTNAME,PDES,CLOSEDBOOL;$expand=PORDERITEMSTEXT_SUBFORM)&$select=SUPNAME,CURDATE,STATDES,ORDNAME";
 
         const response = await getPriorityApi(url);
         res.json(response.data.value)
@@ -62,7 +62,7 @@ router.get('/all-kits-in-stock-notes', async (req, res, next) => {
 //Corona-stock-status 
 router.get('/all-kits-in-stock', async (req, res, next) => {
     try {
-        const url = "LOGPART?$filter=PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IM235905' or PARTNAME eq 'IM235903' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'MBC0097' or PARTNAME eq 'IMHW4412' or PARTNAME eq 'IMR2141' or PARTNAME eq 'IMMVN40004' or PARTNAME eq 'IMMVN40006' &$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE,PORDERS)";
+        const url = "LOGPART?$filter=PARTNAME eq 'IMRP10243X' or PARTNAME eq 'IM235905' or PARTNAME eq 'IM235903' or PARTNAME eq 'IMSDP0096' or PARTNAME eq 'IM7443004U' or PARTNAME eq 'IMHSP9655' or PARTNAME eq 'IMTCS0803' or PARTNAME eq 'TTS238' or PARTNAME eq 'CAP250' or PARTNAME eq 'MBC0097' or PARTNAME eq 'IMHW4412' or PARTNAME eq 'IMR2141' or PARTNAME eq 'IMMVN40004' or PARTNAME eq 'IMMVN40006' or PARTNAME eq 'IMEX00014C' &$select=PARTNAME,EPARTDES&$expand=LOGCOUNTERS_SUBFORM($select=BALANCE,PORDERS)";
 
         const response = await getPriorityApi(url);
         res.json(response.data.value)

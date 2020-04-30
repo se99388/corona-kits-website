@@ -39,9 +39,9 @@ const AllKitsStatus = () => {
             const response = await getPriorityApiAllKitsInStock();
             //query to api to get the notes of each supplier open order 
             const response1 = await getPriorityApiAllKitsInStockNotes();
-            console.log(response1,response)
+            // console.log(response1,response)
             if (response1.length && response.length) {
-                console.log(response1,response)
+                // console.log(response1,response)
                 //response from query of notes
                 response1.map(order => {
                     return order.PORDERITEMS_SUBFORM.filter((product) => {
