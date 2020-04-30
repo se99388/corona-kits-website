@@ -1,7 +1,9 @@
 import React from 'react';
 import { MyTable, TrWithColor, MyDiv, RowCenter } from './kits-supply-table.styled';
 import { Button, Table, Container, Row, Col, Alert } from 'react-bootstrap';
-import Sort from '../../ui/sort';
+import Sort from '../../../ui/sort';
+
+//this componet is the main table in the corona-kits-users page
 const KitsSupplyTable=({kitsSupply, tableTitles, sort})=>{
     const title = kitsSupply.length ? (
         <tr>

@@ -82,14 +82,14 @@ router.get('/labs-list-supply/:partname', async (req, res, next) => {
 
             // 'IMRP10243X' has no date limitation and this is why he has different query
 
-        const noDatePartname = 'IMRP10243X'
+        const noDatePartname = 'IMRP10243X';
 
         const noDatePartname_found = !!partname.filter((singlePartname, index) => {
             if (singlePartname === noDatePartname) {
                 partname.splice([index], 1);
                 return singlePartname
             };
-        });
+        }).length;
 
         const noDatePartname_query = noDatePartname_found ? ` or PARTNAME eq '${noDatePartname}'` : ``;
 

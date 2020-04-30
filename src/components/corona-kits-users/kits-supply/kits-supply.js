@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getPriorityApiLabsList, getPriorityApiLabsListByDate } from '../../services/api';
+import { getPriorityApiLabsList, getPriorityApiLabsListByDate } from '../../../services/api';
 import { Button, Table, Container, Row, Col, Alert} from 'react-bootstrap';
-import SubHeader from '../sub-header';
+import SubHeader from '../../sub-header';
 import SearchByCustomer from './search-by-customer';
-import KitsSum from './kits-sum';
-import Spinner from '../../utils/spinner/Spinner.js';
-import { renameValueInArr, sortByKey, updateData, refreshData, listOfCustomers } from '../../utils/io';
+import Spinner from '../../../utils/spinner/Spinner.js';
+import { renameValueInArr, sortByKey, updateData, refreshData, listOfCustomers } from '../../../utils/io';
 import SearchByDate from './search-by-date';
 import KitsSupplyTable from './kits-supply-table';
-import {data} from '../all-kits-status/data';
+
 
 const TABLE_TITLES = [{ PARTNAME: "CATALOG NUM" },{STATDES:"STATDES"},{ DOCDES: "SUPPLY STATUS " }, { CDES: "LAB" }, { TQUANT: "QUANTITY" }, { CURDATE: "SUPPLY DATE" },{CUSTNAME:"CUSTNAME"}];
 
@@ -18,11 +17,12 @@ const KitsSupply = ({ partname,products }) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    console.log("products",products)
+    //the main query to api
     const priorityApiLabsList = async () => {
-        try {
+        try {          
             setIsLoading(true);
             let result = await getPriorityApiLabsList(partname);
-            // console.log("result",result)
             result = updateData(result);
             setCustomersList(listOfCustomers(result))
             setKitsSupply(result);
@@ -31,20 +31,21 @@ const KitsSupply = ({ partname,products }) => {
             setError(e.message);
         }
     }
-
+//useeffect mount in the component begining and when 'partname' change
     useEffect(() => {
         priorityApiLabsList();
         const refreshSessionId = refreshData(priorityApiLabsList, 600000);
         return () => { clearInterval(refreshSessionId) }
     }, [partname]);
 
-
+//handleSort is a function that sort all the data in the main table for each column
     const handleSort = (isAsc, keyToSort) => {
         const sortedTable = sortByKey(kitsSupply, keyToSort, isAsc);
         setKitsSupply(sortedTable)
         // console.log(sortedTable)
     }
   
+    //the query by date filter to api that create the main table of the supply kits
     const priorityApiLabsListByDate = async (dates) => {
         try {
             setKitsSupply([])

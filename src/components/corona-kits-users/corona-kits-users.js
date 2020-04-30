@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import KitsSupply from '../kits-supply';
+import KitsSupply from './kits-supply';
 import { Button, Table, Container, Row, Col, Alert, Tabs, Tab } from 'react-bootstrap';
 import useHtmlTitle from '../../hooks/use-html-title';
 import { MyTabs } from './corona-kits-users.styled';
-import {data} from '../all-kits-status/data'
+import { data } from '../../corona-settings/data'
 
 //This state create the "corona kits users" page
 const CORONA_ITEMS =
@@ -16,18 +16,19 @@ const CORONA_ITEMS =
         { num: ['IMMVN40004'], desc: 'VIRAL. NO.202' },
         // 'MAGCORE VIRAL NUCLEIC ACID 96T NO.203-MVN40006' 
         { num: ['IMMVN40006'], desc: 'MAGCORE VIRAL. NO.203' },
-        { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141','IMMVN40004','IMMVN40006'], desc: 'All'}
+        { num: ['IMRP10243X', 'IM7443004U', 'IMHW4412', 'IMR2141', 'IMMVN40004', 'IMMVN40006'], desc: 'All' }
     ];
 
 const CoronaKitsUsers = () => {
     useHtmlTitle('Corona-kits-users');
-    const [catalogNum, setCatalogNum] = useState('IMRP10243X');
-    
+    // const [catalogNum, setCatalogNum] = useState('IMRP10243X');
+
     return (
+        //THESE ARE THE TABS. THE TITLE IS TAKEN FROM item.desc. 
         <MyTabs id="controlled-tab-example"
             //this is the default open tab 
-            activeKey={catalogNum}
-            onSelect={(k) => setCatalogNum(k)}
+            // activeKey={catalogNum}
+            // onSelect={(k) => setCatalogNum(k)}
             variant='tabs'
         >
             {CORONA_ITEMS.map((item, index) =>
@@ -37,9 +38,10 @@ const CoronaKitsUsers = () => {
                     eventKey={item.num}
                     title={item.desc}>
                     <KitsSupply
+                        //IN THIS COMPONENT I SEND THE "PARTNAME" TO CREATE THE PAGE FOR THIS PARTNAME ONLY AND THE "PRODUCTS" WHICH IS CONTAINS ALL THE DETAILS ABOUT THIS SPECIFIC PARTNAME
                         key={index}
                         partname={item.num}
-                        products={data}
+                        products={item.desc === 'All' ? data : { [item.num]: data[item.num[0]] }}
                     />
                 </Tab>
             )}

@@ -1,6 +1,6 @@
 import React from 'react';
 import Popup from "reactjs-popup";
-import Calendar from '../../ui/calendar';
+import Calendar from '../../../ui/calendar';
 import {Button} from 'react-bootstrap';
 const SearchByDate = ({apiByDate}) => {
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getPriorityApiKitInStock } from '../../services/api';
-import KitsSum from '../kits-supply/kits-sum';
+import KitsSum from '../corona-kits-users/kits-supply/kits-sum';
 import KitsStock from './kits-stock';
 import { Card, Board } from './sub-header.styled'
-const SubHeader = ({ partname, descriptionItem, products, kitsSupply }) => {
+const SubHeader = ({ partname, products, kitsSupply }) => {
 
     const [allKits, setAllKits] = useState([]);
     const [error, setError] = useState(null);
@@ -11,7 +11,8 @@ const SubHeader = ({ partname, descriptionItem, products, kitsSupply }) => {
     const getKitDetail = async () => {
         try {
             const response = await getPriorityApiKitInStock(partname);
-            addValue(response, products);
+            addDescValue(response, products);
+            console.log("response",response)
             setAllKits(response);
         }
         catch (e) {
@@ -19,7 +20,7 @@ const SubHeader = ({ partname, descriptionItem, products, kitsSupply }) => {
         }
     };
 
-    const addValue = (arr, obj) => {
+    const addDescValue = (arr, obj) => {
         arr.map((item, index) => {
             const objDesc = obj[item.PARTNAME].desc;
             item.desc = objDesc;
@@ -54,16 +55,16 @@ const SubHeader = ({ partname, descriptionItem, products, kitsSupply }) => {
                 {allKits.length ? allKits.map((kit, key) =>
                     <Card key={key}>
                      <h6 style={{fontWeight: 'bold', textAlign:'center' }}>{kit.desc} kit ({kit.PARTNAME})</h6>
-                    <KitsStock
-                        kit={kit}
-                        numberUnitsInKit={products[kit.PARTNAME].number_units_in_box}
-                    />
+                        <KitsStock
+                            kit={kit}
+                            numberUnitsInKit={products[kit.PARTNAME].number_units_in_box}
+                        />
                         <KitsSum
                             partname={kit.PARTNAME}
                             numberUnitsInKit={products[kit.PARTNAME].number_units_in_box}
                             quantity={kitsQuantObj[kit.PARTNAME] && kitsQuantObj[kit.PARTNAME].sum}
                         />
-                      </Card>
+                    </Card>
                     ) : null}
                    </Board>
 

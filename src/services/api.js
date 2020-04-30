@@ -121,7 +121,6 @@ export const getPriorityApiAllKitsInStock = () => {
 };
 
 export const getPriorityApiLabsList = (partname) => {
-    console.log(partname)
     const data = JSON.stringify(partname);
     return handler({
         url: `/api/priority-api/labs-list-supply/${data}`
@@ -129,11 +128,11 @@ export const getPriorityApiLabsList = (partname) => {
 };
 
 
-export const getPriorityApiLabsListByDate = (date,partname) => {
+export const getPriorityApiLabsListByDate = (date, partname) => {
     return handler({
-        method:'POST',
+        method: 'POST',
         url: '/api/priority-api/labs-list-supply-by-date',
-        data: {date,partname}
+        data: {date, partname}
     });
 };
 

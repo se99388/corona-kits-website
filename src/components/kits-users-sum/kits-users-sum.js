@@ -4,7 +4,7 @@ import { renameValueInArr, sortByKey, updateData, refreshData, listOfCustomers }
 import UsersSumTable from './users-sum-table';
 import Spinner from '../../utils/spinner/Spinner.js';
 import { Alert, Row, Col,Button } from 'react-bootstrap';
-import SearchByDate from '../kits-supply/search-by-date';
+import SearchByDate from '../corona-kits-users/kits-supply/search-by-date';
 
 const CORONA_ITEMS = ['IMRP10243X', 'IMHW4412'];
 
@@ -14,12 +14,18 @@ const tableOrderData = [
     { field: 'IMHW4412', title: 'RT-PCR BGI kit' },
     { field: 'total', title: 'TOTAL' },
 ]
+//this component creat the Summery page
 const KitsUsersSum = () => {
     const [usersList, setUsersList] = useState([]);
     const [kitsSupplySum, setKitsSupplySum] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    useEffect(() => {
+        priorityApiLabsList();
+    }, []);
+
+    ////the main query to api (same as the main query of corona kits users page)
     const priorityApiLabsList = async () => {
         try {
             setIsLoading(true);
@@ -38,12 +44,17 @@ const KitsUsersSum = () => {
         // console.log(sortedTable)
     }
 
+    //this function sum the quantity of the kits for each user/lab
     const summarizeData=(result)=>{
+        //change the qaunt to + or - 
         result = updateData(result)
+        //create object. key=customer name, value=array of list supplies object 
         setUsersList(listOfCustomers(result))
+        //summarize the quantity of each kit for each customer 
         const SumOfEachKitByUser = SumEachKitByUsers(listOfCustomers(result));
         setKitsSupplySum(SumOfEachKitByUser);
     }
+
     const SumEachKitByUsers = (list) =>
         Object.keys(list).map(user => {
             const userDetail = Object.assign({ 'lab': user, 'total': 0 }, ...CORONA_ITEMS.map(item => ({ [item]: 0 })))
@@ -62,10 +73,7 @@ const KitsUsersSum = () => {
             return arr;
         });
 
-    useEffect(() => {
-        priorityApiLabsList()
-    }, []);
-
+  //the query by date filter to api (same as the query in the corona-kits-users page) 
     const priorityApiLabsListByDate = async (dates) => {
         try {
             let result = await getPriorityApiLabsListByDate(dates, CORONA_ITEMS);

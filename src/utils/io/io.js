@@ -63,6 +63,7 @@ item.CURDATE =item.CURDATE.replace(/T.+/g,"")
     }
     editObject(item, 'CDES', 'Y_8871_5_ESHB');
     editObject(item, 'CUSTNAME', 'Y_4795_5_ESHB');
+    
     return item;
 });
 
@@ -101,5 +102,5 @@ export const joinCustomersUnderNewKey = (currentObj, newKey = 'לקוחות פל
     currentObj[newKey] && renameValueInArr(currentObj[newKey], 'CDES', newKey)
 }
 
-export const refreshData=(cb,time)=>setInterval(cb,time);
+export const refreshData=setInterval;
 

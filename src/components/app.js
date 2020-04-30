@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Container, Row, Col, Image } from 'react-bootstrap';
-import KitsSupply from './kits-supply';
 import Login from './login';
 import Logout from './logout';
 import Admin from './admin';
